@@ -1,0 +1,192 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "cli": {
+    "packageManager": "pnpm",
+    "analytics": false,
+    "cache": {
+      "enabled": true,
+      "environment": "all"
+    },
+    "schematicCollections": ["@cypress/schematic", "@schematics/angular"]
+  },
+  "schematics": {
+    "@schematics/angular:application": {
+      "strict": true,
+      "standalone": true,
+      "viewEncapsulation": "Emulated"
+    },
+    "@schematics/angular:component": {
+      "style": "css",
+      "changeDetection": "OnPush",
+      "viewEncapsulation": "Emulated",
+      "standalone": true,
+      "export": true,
+      "inlineTemplate": false,
+      "inlineStyle": false
+    }
+  },
+  "projects": {
+    "ngx-dotlottie-web": {
+      "projectType": "library",
+      "root": "ngx-dotlottie-web",
+      "sourceRoot": "ngx-dotlottie-web/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "options": {
+            "project": "ngx-dotlottie-web/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "ngx-dotlottie-web/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "ngx-dotlottie-web/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "tsConfig": "tsconfig.spec.json",
+            "configPath": "../jest.config.js"
+          }
+        }
+      }
+    },
+    "ngx-dotlottie-demo": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "ngx-dotlottie-demo",
+      "sourceRoot": "ngx-dotlottie-demo/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/ngx-dotlottie-demo",
+            "index": "ngx-dotlottie-demo/src/index.html",
+            "browser": "ngx-dotlottie-demo/src/main.ts",
+            "polyfills": [],
+            "tsConfig": "ngx-dotlottie-demo/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "ngx-dotlottie-demo/public"
+              }
+            ],
+            "styles": [
+              "ngx-dotlottie-demo/src/custom-theme.scss",
+              "ngx-dotlottie-demo/src/styles.css"
+            ],
+            "scripts": [],
+            "server": "ngx-dotlottie-demo/src/main.server.ts",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "ngx-dotlottie-demo/src/server.ts"
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "ngx-dotlottie-demo:build:production"
+            },
+            "development": {
+              "buildTarget": "ngx-dotlottie-demo:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "polyfills": [],
+            "tsConfig": "tsconfig.spec.json",
+            "configPath": "../jest.config.js"
+          }
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "ngx-dotlottie-demo:serve",
+            "configFile": "ngx-dotlottie-demo/cypress.config.ts"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ngx-dotlottie-demo:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false,
+            "configFile": "ngx-dotlottie-demo/cypress.config.ts"
+          }
+        },
+        "ct": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "ngx-dotlottie-demo:serve",
+            "watch": true,
+            "headless": false,
+            "testingType": "component",
+            "configFile": "ngx-dotlottie-demo/cypress.config.ts"
+          },
+          "configurations": {
+            "development": {
+              "devServerTarget": "ngx-dotlottie-demo:serve:development"
+            }
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "ngx-dotlottie-demo:serve",
+            "watch": true,
+            "headless": false,
+            "configFile": "ngx-dotlottie-demo/cypress.config.ts"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ngx-dotlottie-demo:serve:production"
+            }
+          }
+        }
+      }
+    }
+  }
+}
