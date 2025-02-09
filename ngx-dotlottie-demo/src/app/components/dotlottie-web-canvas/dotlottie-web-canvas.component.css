@@ -1,0 +1,19 @@
+.w-full {
+  width: 100%;
+}
+
+.no-margin {
+  margin-top: -4px;
+}
+
+.animation {
+  /* height: 50%; */
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}

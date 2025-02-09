@@ -1,0 +1,54 @@
+<div class="card flex flex-col">
+  <h2>{{ title() }}</h2>
+
+  @let opts = options();
+
+  @if (useWebWorker()) {
+    <dotlottie-web
+      [src]="dotlottieURL()"
+      [autoplay]="opts.autoplay"
+      [autoResize]="opts.autoResize"
+      [freeze]="opts.freeze!"
+      [freezeOnOffscreen]="opts.freezeOnOffscreen"
+      [loop]="opts.loop"
+      [play]="opts.play!"
+      [stop]="opts.stop!"
+      [useFrameInterpolation]="opts.useFrameInterpolation"
+      [backgroundColor]="'#000000'"
+      [canvasClass]="'animation'"
+    />
+  } @else {
+    <dotlottie-webworker
+      [src]="dotlottieURL()"
+      [autoplay]="opts.autoplay"
+      [autoResize]="opts.autoResize"
+      [freeze]="opts.freeze!"
+      [freezeOnOffscreen]="opts.freezeOnOffscreen"
+      [loop]="opts.loop"
+      [play]="opts.play!"
+      [stop]="opts.stop!"
+      [useFrameInterpolation]="opts.useFrameInterpolation"
+      [backgroundColor]="'#000000'"
+      [canvasClass]="'animation'"
+    />
+  }
+
+  <mat-form-field class="w-full no-margin">
+    <mat-label>Dotlottie URL</mat-label>
+
+    <input
+      #input
+      matInput
+      placeholder="Dotlottie URL"
+      [value]="dotlottieURL()"
+    />
+  </mat-form-field>
+
+  <dotlottie-web-controls
+    name="dotlottie component controls"
+    [(model)]="options"
+    (change)="onChange($event)"
+  />
+
+  <mat-divider *ngIf="showDivider"></mat-divider>
+</div>
