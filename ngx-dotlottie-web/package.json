@@ -1,0 +1,52 @@
+{
+  "name": "ngx-dotlottie-web",
+  "version": "0.0.0",
+  "bugs": "git+https://github.com/victor-enogwe/ng-dotlottie-web/issues",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/schematics": "^19.1.6",
+    "@schematics/angular": "^19.1.6"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "homepage": "https://github.com/victor-enogwe/ng-dotlottie-web#readme",
+  "keywords": [
+    "after effect",
+    "angular 18",
+    "angular 19",
+    "angular18",
+    "angular19",
+    "animation",
+    "canvas",
+    "dotlottie",
+    "ivy",
+    "lottie",
+    "plugin",
+    "server side render",
+    "server-side render",
+    "ssr",
+    "svg",
+    "universal",
+    "wasm"
+  ],
+  "license": "MIT",
+  "ng-add": {
+    "save": "dependencies"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=18.0.0",
+    "@angular/core": ">=18.0.0",
+    "@lottiefiles/dotlottie-web": ">=0.28.0",
+    "rxjs": ">=6.0.0"
+  },
+  "repository": "victor-enogwe/ng-dotlottie-web.git",
+  "schematics": "./schematics/collection.json",
+  "scripts": {
+    "build": "tsc -p tsconfig.schematics.json",
+    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../dist/ngx-dotlottie-web/"
+  },
+  "sideEffects": false
+}
