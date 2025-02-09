@@ -1,0 +1,9 @@
+.toggle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.mat-button-toggle {
+  flex-grow: 1;
+}
