@@ -1,0 +1,26 @@
+rc: $(git rev-parse --show-toplevel)/.lefthook.sh
+pre-push:
+  jobs:
+    - name: format
+      run: pnpm format
+
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: '**/*.{js,mjs,cjs,ts,mts,cts,json,md,*css,html,md,yml}'
+      run: pnpm format
+      stage_fixed: true
+    lint:
+      glob: '**/*.{js,mjs,cjs,ts,mts,cts,json,md,*css,html,md}'
+      run: pnpm lint
+      stage_fixed: true
+    check:types:
+      glob: '**/*.{mts,ts}'
+      run: pnpm tsc
+
+commit-msg:
+  parallel: true
+  commands:
+    commitlint:
+      run: pnpm commitlint --edit $1
