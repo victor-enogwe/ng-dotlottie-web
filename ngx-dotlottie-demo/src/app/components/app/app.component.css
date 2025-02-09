@@ -1,0 +1,27 @@
+.animation-host {
+  display: grid;
+  gap: 20px;
+  flex-direction: row;
+  align-items: center;
+  height: 150px;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.no-margin {
+  margin-top: -4px;
+}
+
+.animation {
+  height: 50%;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
