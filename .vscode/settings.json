@@ -1,0 +1,124 @@
+{
+  "[css]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "breadcrumbs.enabled": true,
+  "cSpell.ignoreWords": [],
+  "cSpell.words": [
+    "bazel",
+    "commitlint",
+    "dotlottie",
+    "eslintcache",
+    "lefthook",
+    "lottiefiles",
+    "packagr",
+    "syncpack",
+    "webworker"
+  ],
+  "debug.javascript.terminalOptions": {
+    "skipFiles": ["<node_internals>/**", "**/$KNOWN_TOOLS$/**"]
+  },
+  "editor.autoIndent": "full",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "explorer.confirmDelete": true,
+  "explorer.confirmDragAndDrop": true,
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorStyle": "line",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.detectIndentation": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.renderWhitespace": "none",
+  "editor.rulers": [80],
+  "eslint.debug": true,
+  "eslint.options": {
+    "overrideConfigFile": "eslint.config.mjs"
+  },
+  "eslint.codeAction.disableRuleComment": {
+    "enable": false
+  },
+  "eslint.codeActionsOnSave.mode": "problems",
+  "eslint.format.enable": true,
+  "eslint.useFlatConfig": true,
+  "eslint.lintTask.enable": true,
+  "eslint.nodePath": "node_modules",
+  "eslint.run": "onSave",
+  "editor.tabCompletion": "on",
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "package.json": "pnpm-workspace.yaml, pnpm-lock.yaml, package-lock.json, README.md, .gitignore, .prettierignore, .npmrc, .nvmrc, tsconfig.json, prettier.config.*js, .eslintrc.*js, eslint.config.*js, .editorconfig, .eslintcache, .eslintignore, tsconfig.*, .eslintrc.json, .env.*, .continuerc.json, angular.json, ng-package.json, vite.config.*ts, lefthook.yml,  .lefthook.sh, renovate.json, LICENSE.md, SECURITY.md, cypress.config.ts, jest.config.js",
+    "tsconfig.json": "tsconfig.*.json"
+  },
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.svn": true,
+    "**/CVS": true,
+    "**/dist": true,
+    "**/.angular": true,
+    "**/.next": true,
+    "**/.pnpm-store": true,
+    "**/.eslintignore": true,
+    "**/.eslintcache": true,
+    "pnpm-lock.yaml": true,
+    ".npmrc": true,
+    ".nvmrc": true,
+    ".gitattributes": true,
+    "LICENSE": true,
+    ".prettierignore": true,
+    ".editorconfig": true,
+    ".gitignore": true,
+    "tsconfig*.tsbuildinfo": true
+  },
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "git.autofetch": true,
+  "git.enableCommitSigning": true,
+  "git.enableSmartCommit": true,
+  "git.ignoreLimitWarning": true,
+  "prettier.requireConfig": true,
+  "prettier.configPath": "prettier.config.mjs",
+  "prettier.ignorePath": ".prettierignore",
+  "search.exclude": {
+    "**/bower_components": true,
+    "**/coverage": true,
+    "**/dist": true,
+    "pnpm-lock.yaml": true,
+    "package-lock.json": true
+  },
+  "typescript.format.semicolons": "insert",
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "workbench.colorTheme": "Material Theme Darker High Contrast",
+  "workbench.iconTheme": "material-icon-theme",
+  "terminal.explorerKind": "external",
+  "terminal.integrated.env.osx": {
+    "NODE_ENV": "development"
+  }
+}

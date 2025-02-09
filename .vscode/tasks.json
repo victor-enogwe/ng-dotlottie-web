@@ -1,0 +1,107 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "install dependencies",
+      "command": "pnpm",
+      "args": ["i"],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "isBackground": false,
+      "presentation": {
+        "reveal": "always",
+        "revealProblems": "onProblem",
+        "group": "start",
+        "showReuseMessage": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "check unused dependencies",
+      "dependsOn": ["install dependencies"],
+      "command": "pnpm",
+      "args": ["depcheck"],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "isBackground": false,
+      "presentation": {
+        "reveal": "always",
+        "revealProblems": "onProblem",
+        "group": "start",
+        "showReuseMessage": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "build ngx-dotlottie-web",
+      "dependsOn": ["check unused dependencies"],
+      "command": "pnpm",
+      "args": ["build"],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "isBackground": false,
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "presentation": {
+        "reveal": "always",
+        "revealProblems": "onProblem",
+        "group": "start",
+        "close": true,
+        "showReuseMessage": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "ng serve",
+      "type": "shell",
+      "dependsOn": ["build ngx-dotlottie-web"],
+      "command": "pnpm",
+      "args": ["use", "demo", "start"],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "bundle generation complete"
+          }
+        }
+      }
+    },
+    {
+      "label": "ng test",
+      "dependsOn": ["build ngx-dotlottie-web"],
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["test"],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "bundle generation complete"
+          }
+        }
+      }
+    }
+  ]
+}

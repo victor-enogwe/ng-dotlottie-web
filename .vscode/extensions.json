@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "angular.ng-template",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "streetsidesoftware.code-spell-checker",
+    "editorconfig.editorconfig",
+    "CrazyFluff.bettermaterialthemedarkerhighcontrast",
+    "pkief.material-icon-theme",
+    "christian-kohler.path-intellisense",
+    "visualstudioexptteam.vscodeintellicode"
+  ]
+}
