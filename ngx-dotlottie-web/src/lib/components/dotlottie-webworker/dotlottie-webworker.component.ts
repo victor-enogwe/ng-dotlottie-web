@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
@@ -16,13 +16,44 @@ import { DotLottieWebComponent } from '../dotlottie-web/dotlottie-web.component'
 
 @Component({
   selector: 'dotlottie-webworker',
-  template: '<canvas [ngClass]="canvasClass()" #canvas part="canvas"></canvas>',
+  template: `
+    <div>
+      <ng-container
+        #outlet
+        [ngTemplateOutlet]="content"
+      ></ng-container>
+    </div>
+
+    <ng-template #content>
+      <canvas
+        [ngClass]="canvasClass()"
+        #canvas
+        part="part dotlottie-webworker"
+      ></canvas>
+    </ng-template>
+  `,
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [NgClass],
-  styleUrls: ['./dotlottie-webworker.component.css'],
+  imports: [NgClass, NgTemplateOutlet],
+  styles: `
+    .w-full {
+      width: 100%;
+    }
+
+    .h-full {
+      height: 100%;
+    }
+
+    .d-block {
+      display: block;
+    }
+
+    .relative {
+      position: relative;
+    }
+  `,
   host: { '[class]': 'hostClass()' },
 })
 export class DotLottieWebWorkerComponent
