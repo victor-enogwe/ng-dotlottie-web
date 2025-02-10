@@ -78,7 +78,7 @@
     "**/.hg": true,
     "**/.svn": true,
     "**/CVS": true,
-    "**/dist": false,
+    "**/dist": true,
     "**/.angular": true,
     "**/.next": true,
     "**/.pnpm-store": true,
