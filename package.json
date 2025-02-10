@@ -3,7 +3,7 @@
   "description": "TypeScript NPM Module Boilerplate",
   "version": "0.0.0",
   "author": "Victor Enogwe",
-  "bugs": "https://github.com/victor-enogwe/ng-dotlottie-web/issues",
+  "bugs": "https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
@@ -113,7 +113,7 @@
   "files": [
     "ngx-dotlottie-web/**/*"
   ],
-  "homepage": "https://github.com/victor-enogwe/ng-dotlottie-web#readme",
+  "homepage": "https://github.com/victor-enogwe/ngx-dotlottie-web#readme",
   "keywords": [
     "boilerplate",
     "module",
@@ -136,7 +136,7 @@
     "access": "public",
     "provenance": true
   },
-  "repository": "victor-enogwe/ng-dotlottie-web.git",
+  "repository": "victor-enogwe/ngx-dotlottie-web.git",
   "scripts": {
     "build": "ng build ngx-dotlottie-web",
     "build:site": "ng build ngx-dotlottie-demo",

@@ -1,7 +1,7 @@
 {
   "name": "ngx-dotlottie-web",
   "version": "0.0.0",
-  "bugs": "git+https://github.com/victor-enogwe/ng-dotlottie-web/issues",
+  "bugs": "git+https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
   "dependencies": {
     "tslib": "^2.3.0"
   },
@@ -16,7 +16,7 @@
     "access": "public",
     "provenance": true
   },
-  "homepage": "https://github.com/victor-enogwe/ng-dotlottie-web#readme",
+  "homepage": "https://github.com/victor-enogwe/ngx-dotlottie-web#readme",
   "keywords": [
     "after effect",
     "angular 18",
@@ -46,7 +46,7 @@
     "@lottiefiles/dotlottie-web": ">=0.28.0",
     "rxjs": ">=6.0.0"
   },
-  "repository": "victor-enogwe/ng-dotlottie-web.git",
+  "repository": "victor-enogwe/ngx-dotlottie-web.git",
   "schematics": "./schematics/collection.json",
   "scripts": {
     "build": "tsc -p tsconfig.schematics.json",
