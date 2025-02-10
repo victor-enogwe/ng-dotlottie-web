@@ -187,7 +187,10 @@
           }
         },
         "deploy": {
-          "builder": "angular-cli-ghpages:deploy"
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "buildTarget": "ngx-dotlottie-demo:build:production"
+          }
         }
       }
     }

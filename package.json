@@ -128,7 +128,8 @@
     "overrides": {
       "@typescript-eslint/utils": "8.23.0",
       "glob": "11.0.1",
-      "rimraf": "6.0.1"
+      "rimraf": "6.0.1",
+      "gh-pages": "6.3.0"
     }
   },
   "private": false,
