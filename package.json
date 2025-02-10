@@ -90,7 +90,6 @@
     "@types/jest": "^29.5.14",
     "@types/node": "22.13.1",
     "@typescript-eslint/eslint-plugin": "8.23.0",
-    "canvas": "2.11.1",
     "depcheck": "1.4.7",
     "eslint": "9.20.0",
     "eslint-config-prettier": "10.0.1",
