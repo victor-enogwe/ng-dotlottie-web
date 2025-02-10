@@ -1,5 +1,5 @@
 {
-  "name": "ngx-dotlottie",
+  "name": "ngx-dotlottie-web",
   "description": "TypeScript NPM Module Boilerplate",
   "version": "0.0.0",
   "author": "Victor Enogwe",
@@ -154,7 +154,7 @@
     "prepare": "pnpm build",
     "prepublishOnly": "npm test && pnpm lint",
     "preversion": "pnpm lint",
-    "publish:ngx-dotlottie-web": "pnpm publish dist/ngx-dotlottie-web --access public --provenance",
+    "publish:ngx-dotlottie-web": "pnpm publish dist/ngx-dotlottie-web --access public --provenance --no-git-checks",
     "serve:ssr:ngx-dotlottie-demo": "node dist/ngx-dotlottie-demo/server/server.mjs",
     "start": "ng serve",
     "test": "ng test --project ngx-dotlottie-web",
