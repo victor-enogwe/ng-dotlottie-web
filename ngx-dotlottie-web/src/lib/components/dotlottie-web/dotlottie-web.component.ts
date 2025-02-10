@@ -1,22 +1,25 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   HostListener,
+  Renderer2,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
   ViewEncapsulation,
   afterNextRender,
   inject,
   input,
   output,
+  reflectComponentType,
   signal,
   viewChild,
-  type ElementRef,
 } from '@angular/core';
-import {
-  takeUntilDestroyed
-} from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import type {
   CompleteEvent,
   Config,
@@ -39,6 +42,7 @@ import {
   EMPTY,
   ReplaySubject,
   Subject,
+  distinctUntilChanged,
   iif,
   startWith,
   switchMap,
@@ -50,16 +54,48 @@ import {
   DotLottieWebComponentOutput,
 } from '../../@types/dotlottie-web';
 import { DotLottieWebTransferStateService } from '../../services/dotlottie-web-transfer-state/dotlottie-web-transfer-state.service';
+import { isTwoEqualObjects } from '../../utils/is-two-equal-objects/is-two-equal-objects';
 
 @Component({
   selector: 'dotlottie-web',
-  template: '<canvas [ngClass]="canvasClass()" #canvas part="canvas"></canvas>',
+  template: `
+    <div>
+      <ng-container
+        #outlet
+        [ngTemplateOutlet]="content"
+      ></ng-container>
+    </div>
+
+    <ng-template #content>
+      <canvas
+        [ngClass]="canvasClass()"
+        #canvas
+        part="part dotlottie-web"
+      ></canvas>
+    </ng-template>
+  `,
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [NgClass],
-  styleUrls: ['./dotlottie-web.component.css'],
+  imports: [NgClass, NgTemplateOutlet],
+  styles: `
+    .w-full {
+      width: 100%;
+    }
+
+    .h-full {
+      height: 100%;
+    }
+
+    .d-block {
+      display: block;
+    }
+
+    .relative {
+      position: relative;
+    }
+  `,
   host: { '[class]': 'hostClass()' },
 })
 export class DotLottieWebComponent
@@ -67,12 +103,17 @@ export class DotLottieWebComponent
 {
   protected Lottie = DotLottie;
 
-  private readonly destroyRef = inject(DestroyRef);
+  @ViewChild('outlet', { read: ViewContainerRef }) outletRef?: ViewContainerRef;
 
-  protected readonly dotlottie = signal<DotLottie | null>(null);
+  @ViewChild('content', { read: TemplateRef })
+  contentRef?: TemplateRef<unknown>;
 
   private readonly canvas =
     viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
+
+  private readonly destroyRef = inject(DestroyRef);
+
+  protected readonly dotlottie = signal<DotLottie | null>(null);
 
   private readonly transferState = inject(DotLottieWebTransferStateService);
 
@@ -89,7 +130,10 @@ export class DotLottieWebComponent
     switchMap((ready) =>
       iif(
         () => ready,
-        this.dotlottieConfigEvents$.pipe(tap(this.processEvents.bind(this))),
+        this.dotlottieConfigEvents$.pipe(
+          distinctUntilChanged(isTwoEqualObjects),
+          tap(this.processEvents.bind(this)),
+        ),
         EMPTY,
       ),
     ),
@@ -271,11 +315,20 @@ export class DotLottieWebComponent
 
     const data = value ? this.transferState.get<Data>(value) : undefined;
 
+    const config = this.loadConfig();
+
+    if (data) {
+      Object.assign(config, { data });
+    } else {
+      Object.assign(config, { src: value });
+    }
+
+    this.outletRef?.clear();
+    this.outletRef?.createEmbeddedView(this.contentRef!);
+
     const dotlottie = new this.Lottie({
-      ...this.loadConfig(),
+      ...config,
       canvas: this.canvas().nativeElement,
-      data: data!,
-      src: data ? undefined : value,
     });
 
     this.addListeners(dotlottie);
