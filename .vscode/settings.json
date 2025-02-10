@@ -27,6 +27,7 @@
     "commitlint",
     "dotlottie",
     "eslintcache",
+    "ghpages",
     "lefthook",
     "lottiefiles",
     "packagr",
@@ -34,7 +35,10 @@
     "webworker"
   ],
   "debug.javascript.terminalOptions": {
-    "skipFiles": ["<node_internals>/**", "**/$KNOWN_TOOLS$/**"]
+    "skipFiles": [
+      "<node_internals>/**",
+      "**/$KNOWN_TOOLS$/**"
+    ]
   },
   "editor.autoIndent": "full",
   "editor.codeActionsOnSave": {
@@ -50,7 +54,9 @@
   "editor.formatOnSave": true,
   "editor.insertSpaces": true,
   "editor.renderWhitespace": "none",
-  "editor.rulers": [80],
+  "editor.rulers": [
+    80
+  ],
   "eslint.debug": true,
   "eslint.options": {
     "overrideConfigFile": "eslint.config.mjs"
