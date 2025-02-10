@@ -8,7 +8,7 @@ import type {
   PathToAnimation,
 } from '../../@types/dotlottie-web';
 import { DOT_LOTTIE_WEB_SSR_OPTIONS } from '../../providers/dotlottie-web.provider';
-import { setWasmURL } from '../../utils/set-wasm';
+import { setWasmURL } from '../../utils/set-wasm/set-wasm';
 import { DotLottieWebTransferStateService } from '../dotlottie-web-transfer-state/dotlottie-web-transfer-state.service';
 
 /**
