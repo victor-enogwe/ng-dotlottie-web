@@ -14,7 +14,7 @@ import {
 } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import { DotLottieWebComponentInputType } from '../../../../../ngx-dotlottie-web/src/lib/@types/dotlottie-web';
+import { DotLottieWebComponentInputType } from '../../../../../ngx-dotlottie-web/src/web/src/lib/@types/dotlottie-web';
 
 @Component({
   selector: 'dotlottie-web-controls',

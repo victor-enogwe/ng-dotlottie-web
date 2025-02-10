@@ -2,6 +2,7 @@ const { resolve } = require('node:path');
 
 /** @type {import('jest').Config} */
 module.exports = {
+  testEnvironment: resolve(__dirname, 'jest.env.js'),
   rootDir: resolve(__dirname),
   moduleFileExtensions: ['js', 'json', 'ts'],
   collectCoverageFrom: ['**/*.(t|j)s'],
@@ -12,10 +13,7 @@ module.exports = {
     '.mock.ts',
     '.e2e.spec.ts',
   ],
-  setupFiles: [],
+  setupFiles: [resolve(__dirname, './jest.setup.js')],
   setupFilesAfterEnv: [],
   detectOpenHandles: true,
-  globals: {
-    fetch,
-  },
 };
