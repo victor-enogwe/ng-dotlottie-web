@@ -1,6 +1,6 @@
 {
   "name": "ngx-dotlottie-web",
-  "version": "0.0.0",
+  "version": "0.0.0-beta11",
   "bugs": "git+https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
   "dependencies": {
     "tslib": "^2.3.0"
