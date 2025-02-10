@@ -103,17 +103,18 @@ export class DotLottieWebComponent
 {
   protected Lottie = DotLottie;
 
-  @ViewChild('outlet', { read: ViewContainerRef }) outletRef?: ViewContainerRef;
+  @ViewChild('outlet', { read: ViewContainerRef })
+  private readonly outletRef?: ViewContainerRef;
 
   @ViewChild('content', { read: TemplateRef })
-  contentRef?: TemplateRef<unknown>;
+  private readonly contentRef?: TemplateRef<unknown>;
 
   private readonly canvas =
     viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
 
   private readonly destroyRef = inject(DestroyRef);
 
-  protected readonly dotlottie = signal<DotLottie | null>(null);
+  private readonly dotlottie = signal<DotLottie | null>(null);
 
   private readonly transferState = inject(DotLottieWebTransferStateService);
 
