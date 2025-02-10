@@ -16,8 +16,8 @@ jobs:
       - name: Pnpm setup
         uses: pnpm/action-setup@v4
 
-      - run: npm i
-      - run: npm test
+      - run: pnpm i
+      - run: pnpm test
 
   publish-npm:
     needs: build
@@ -28,8 +28,12 @@ jobs:
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
-      - run: npm i
-      - run: npm run build
-      - run: npm publish
+
+      - name: Pnpm setup
+        uses: pnpm/action-setup@v4
+        
+      - run: pnpm i
+      - run: pnpm build
+      - run: pnpm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
