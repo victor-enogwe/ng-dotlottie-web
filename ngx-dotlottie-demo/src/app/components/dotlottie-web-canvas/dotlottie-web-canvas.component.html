@@ -4,7 +4,7 @@
   @let opts = options();
 
   @if (useWebWorker()) {
-    <dotlottie-web
+    <dotlottie-webworker
       [src]="dotlottieURL()"
       [autoplay]="opts.autoplay"
       [autoResize]="opts.autoResize"
@@ -18,7 +18,7 @@
       [canvasClass]="'animation'"
     />
   } @else {
-    <dotlottie-webworker
+    <dotlottie-web
       [src]="dotlottieURL()"
       [autoplay]="opts.autoplay"
       [autoResize]="opts.autoResize"
@@ -40,7 +40,7 @@
       #input
       matInput
       placeholder="Dotlottie URL"
-      [value]="dotlottieURL()"
+      [(ngModel)]="dotlottieURL"
     />
   </mat-form-field>
 

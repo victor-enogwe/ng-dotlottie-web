@@ -7,6 +7,7 @@ import {
   model,
   ViewEncapsulation,
 } from '@angular/core';
+import { FormsModule, NgModel } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -27,8 +28,10 @@ import { DotlottieWebControlsComponent } from '../dotlottie-web-controls/dotlott
     MatFormField,
     MatLabel,
     MatInput,
+    FormsModule,
     NgIf,
   ],
+  providers: [NgModel],
   templateUrl: './dotlottie-web-canvas.component.html',
   styleUrl: './dotlottie-web-canvas.component.css',
   encapsulation: ViewEncapsulation.Emulated,
