@@ -31,9 +31,9 @@ jobs:
 
       - name: Pnpm setup
         uses: pnpm/action-setup@v4
-        
+
       - run: pnpm i
       - run: pnpm build
-      - run: pnpm publish
+      - run: pnpm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
