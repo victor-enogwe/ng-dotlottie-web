@@ -1,64 +1,69 @@
-# NgDotlottieWeb
+# ngx-dotlottie-web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.0.
+A web component library for rendering dotLottie animations in Angular applications.
 
-## Code scaffolding
+## Installation
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+You can install this package using npm:
 
 ```bash
-ng generate --help
+npm install ngx-dotlottie-web
 ```
 
-## Building
+## Basic Usage
 
-To build the library, run:
+Import and use the components in your Angular application:
 
-```bash
-ng build ngx-dotlottie-web
+```typescript
+// app.component.ts
+import { DotLottieWebComponent } from 'ngx-dotlottie-web';
+import { DotLottieWebWorkerComponent } from 'ngx-dotlottie-web/webworker';
+
+@Component({
+  // ...
+  imports: [DotLottieWebComponent, DotLottieWebWorkerComponent],
+  // ...
+})
 ```
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+Basic usage in your template:
 
-### Publishing the Library
+```html
+<!-- Regular dotLottie player -->
+<dotlottie-web
+  [src]="'path/to/animation.lottie'"
+  [autoplay]="true"
+  [loop]="true"
+></dotlottie-web>
 
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-
-   ```bash
-   cd dist/ngx-dotlottie-web
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Jest](https://jestjs.io) test runner, use the following command:
-
-```bash
-ng test
+<!-- Web Worker based player (better performance) -->
+<dotlottie-webworker
+  [src]="'path/to/animation.lottie'"
+  [autoplay]="true"
+  [loop]="true"
+  workerId="unique-worker-id"
+></dotlottie-webworker>
 ```
 
-## Running end-to-end tests
+Available inputs for both components:
 
-For end-to-end (e2e) testing, run:
+| Input              | Type      | Default   | Description                           |
+|-------------------|-----------|-----------|---------------------------------------|
+| src               | string    | required  | URL or path to .lottie file          |
+| autoplay          | boolean   | true      | Auto-plays animation when loaded      |
+| loop              | boolean   | true      | Loops the animation                   |
+| autoResize        | boolean   | true      | Adjusts size to container             |
+| backgroundColor   | string    | '#FFFFFF' | Background color of the canvas        |
+| speed             | number    | undefined | Playback speed                        |
 
-```bash
-ng e2e
-```
+...
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Additional inputs for webworker component:
+| Input              | Type      | Default   | Description                           |
 
-## Additional Resources
+|-------------------|-----------|-----------|---------------------------------------|
+| workerId          | string    | required  | Unique identifier for the web worker service      |
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## License
+
+MIT

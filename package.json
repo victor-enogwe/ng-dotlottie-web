@@ -1,7 +1,7 @@
 {
   "name": "ngx-dotlottie-web",
   "description": "TypeScript NPM Module Boilerplate",
-  "version": "0.0.0-beta11",
+  "version": "0.0.0-beta12",
   "author": "Victor Enogwe",
   "bugs": "https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
   "commitlint": {
