@@ -34,6 +34,6 @@ jobs:
 
       - run: pnpm i
       - run: pnpm build
-      - run: pnpm publish --provenance --access public
+      - run: pnpm publish:ngx-dotlottie-web
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
