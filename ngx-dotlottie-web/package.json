@@ -12,6 +12,10 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "homepage": "https://github.com/victor-enogwe/ng-dotlottie-web#readme",
   "keywords": [
     "after effect",
