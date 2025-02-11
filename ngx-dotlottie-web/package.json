@@ -1,7 +1,19 @@
 {
   "name": "ngx-dotlottie-web",
+  "description": "Lottie and DotLottie player for Angular",
   "version": "0.0.0-beta12",
+  "homepage": "https://github.com/victor-enogwe/ngx-dotlottie-web#readme",
+  "author": "Victor Enogwe <victor.enogwe@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victor-enogwe/ngx-dotlottie-web.git",
+    "directory": "ngx-dotlottie-web"
+  },
   "bugs": "git+https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
+  "contributors": [
+    "Victor Enogwe <victor.enogwe@gmail.com>"
+  ],
   "devDependencies": {
     "@angular-devkit/schematics": "19.1.6",
     "@jest/globals": "29.7.0",
@@ -11,7 +23,6 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "homepage": "https://github.com/victor-enogwe/ngx-dotlottie-web#readme",
   "keywords": [
     "after effect",
     "angular 18",
@@ -31,7 +42,6 @@
     "universal",
     "wasm"
   ],
-  "license": "MIT",
   "ng-add": {
     "save": "dependencies"
   },
@@ -45,7 +55,6 @@
     "access": "public",
     "provenance": true
   },
-  "repository": "victor-enogwe/ngx-dotlottie-web.git",
   "schematics": "./schematics/collection.json",
   "scripts": {
     "build": "tsc -p tsconfig.schematics.json",

@@ -1,11 +1,23 @@
 {
   "name": "ngx-dotlottie-web",
-  "description": "TypeScript NPM Module Boilerplate",
+  "description": "Lottie and DotLottie player for Angular",
   "version": "0.0.0-beta12",
-  "author": "Victor Enogwe",
+  "homepage": "https://github.com/victor-enogwe/ngx-dotlottie-web#readme",
+  "author": "Victor Enogwe <victor.enogwe@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victor-enogwe/ngx-dotlottie-web.git",
+    "directory": "ngx-dotlottie-web"
+  },
   "bugs": "https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
+  "contributors": [
+    "Victor Enogwe <victor.enogwe@gmail.com>"
+  ],
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"],
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
     "rules": {
       "type-enum": [
         2,
@@ -45,7 +57,10 @@
       "jest",
       "tslib"
     ],
-    "ignorePatterns": ["dist", "coverage"]
+    "ignorePatterns": [
+      "dist",
+      "coverage"
+    ]
   },
   "dependencies": {
     "@angular/animations": "19.1.5",
@@ -106,15 +121,21 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "files": ["ngx-dotlottie-web/**/*"],
-  "homepage": "https://github.com/victor-enogwe/ngx-dotlottie-web#readme",
-  "keywords": ["boilerplate", "module", "npm", "typescript"],
-  "license": "MIT",
+  "files": [
+    "ngx-dotlottie-web/**/*"
+  ],
+  "keywords": [
+    "boilerplate",
+    "module",
+    "npm",
+    "typescript"
+  ],
   "main": "lib/index.js",
   "packageManager": "pnpm@9.15.4",
   "pnpm": {
     "overrides": {
       "@typescript-eslint/utils": "8.23.0",
+      "esbuild": "0.25.0",
       "glob": "11.0.1",
       "rimraf": "6.0.1"
     }
@@ -124,7 +145,6 @@
     "access": "public",
     "provenance": true
   },
-  "repository": "victor-enogwe/ngx-dotlottie-web.git",
   "scripts": {
     "build": "ng build ngx-dotlottie-web",
     "build:demo": "ng build ngx-dotlottie-demo",
@@ -163,7 +183,10 @@
         "strategy": "versionsByName"
       }
     },
-    "source": ["package.json", "ngx-dotlottie-web/package.json"],
+    "source": [
+      "package.json",
+      "ngx-dotlottie-web/package.json"
+    ],
     "sortAz": [
       "bin",
       "contributors",
@@ -185,24 +208,52 @@
       "production",
       "default"
     ],
-    "sortFirst": ["name", "description", "version", "author"],
+    "sortFirst": [
+      "name",
+      "description",
+      "version",
+      "homepage",
+      "author",
+      "license",
+      "repository",
+      "bugs",
+      "contributors"
+    ],
     "versionGroups": [
       {
-        "dependencies": ["**"],
-        "dependencyTypes": ["dev", "peer", "prod"],
-        "packages": ["**"],
+        "dependencies": [
+          "**"
+        ],
+        "dependencyTypes": [
+          "dev",
+          "peer",
+          "prod"
+        ],
+        "packages": [
+          "**"
+        ],
         "policy": "sameRange",
         "preferVersion": "highestSemver"
       },
       {
         "label": "Versions in engines field should all match",
-        "dependencyTypes": ["engines"],
-        "dependencies": ["**"],
-        "packages": ["**"]
+        "dependencyTypes": [
+          "engines"
+        ],
+        "dependencies": [
+          "**"
+        ],
+        "packages": [
+          "**"
+        ]
       },
       {
-        "dependencies": ["@types/**"],
-        "dependencyTypes": ["!dev"],
+        "dependencies": [
+          "@types/**"
+        ],
+        "dependencyTypes": [
+          "!dev"
+        ],
         "isBanned": true,
         "label": "@types packages should only be under devDependencies"
       }
