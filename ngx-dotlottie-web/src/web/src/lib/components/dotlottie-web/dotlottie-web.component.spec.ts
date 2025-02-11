@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DotLottie, DotLottieWorker } from '@lottiefiles/dotlottie-web';
 import { resolve } from 'node:path';

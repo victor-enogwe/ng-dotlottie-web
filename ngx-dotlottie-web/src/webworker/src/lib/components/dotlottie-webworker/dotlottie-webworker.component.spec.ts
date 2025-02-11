@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { expect } from '@jest/globals';
 import { DotLottie, DotLottieWorker } from '@lottiefiles/dotlottie-web';
 import { resolve } from 'node:path';
 import { DotLottieWebworkerComponentInputType } from '../../../../../web/src/lib/@types/dotlottie-web';

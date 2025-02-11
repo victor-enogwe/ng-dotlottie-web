@@ -1,3 +1,4 @@
+import { expect } from '@jest/globals';
 import { isTwoEqualObjects } from './is-two-equal-objects';
 
 describe('isTwoEqualObjects', () => {
