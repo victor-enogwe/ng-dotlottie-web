@@ -2,17 +2,13 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are currently being supported with security updates.
+For Angular projects, it is recommended to provide security updates only for versions following actively maintained best practices. We actively support Angular version 18 and above.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Angular Version | Supported          |
+| --------------- | ------------------ |
+| 18.x and later  | :white_check_mark: |
+| Below 18        | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a reported vulnerability, what to expect if the vulnerability is accepted or declined, etc.
+If you discover a vulnerability, please report it immediately. Submit your report via our designated reporting channel (e.g., our security mailing list or GitHub Security Advisories). We will acknowledge your report promptly and provide regular updates on our investigation and remediation process.
