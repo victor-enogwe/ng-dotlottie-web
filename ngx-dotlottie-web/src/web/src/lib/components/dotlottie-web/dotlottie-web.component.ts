@@ -312,7 +312,7 @@ export class DotLottieWebComponent
   private setSrc(value: Config['src']): void {
     this.destroy();
 
-    const data = value ? this.transferState.get<Data>(value) : undefined;
+    const data = value ? this.transferState.get(value) : undefined;
 
     const config = this.loadConfig();
 
