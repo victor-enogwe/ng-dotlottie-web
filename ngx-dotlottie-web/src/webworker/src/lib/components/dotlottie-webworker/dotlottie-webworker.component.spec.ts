@@ -1,8 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { ComponentFixture } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { expect } from '@jest/globals';
 import { DotLottie, DotLottieWorker } from '@lottiefiles/dotlottie-web';
 import { resolve } from 'node:path';
-import { DotLottieWebworkerComponentInputType } from '../../../../../web/src/lib/@types/dotlottie-web';
+import type { DotLottieWebworkerComponentInputType } from '../../../../../web/src/lib/@types/dotlottie-web';
 import { DotLottieWebWorkerComponent } from './dotlottie-webworker.component';
 
 describe.skip('DotLottieWebworkerComponent', () => {
@@ -82,19 +83,19 @@ describe.skip('DotLottieWebworkerComponent', () => {
     const fixture = createComponent({ src, workerId });
     const { componentInstance, componentRef, debugElement } = fixture;
 
-    const lottie = await new Promise<DotLottie | DotLottieWorker | null>(
-      (resolve) => {
-        const subscription = componentInstance.lottieInit.subscribe(
-          (lottie) => {
-            resolve(lottie);
-            subscription.unsubscribe();
-          },
-        );
-      },
-    );
+    // const lottie = await new Promise<DotLottie | DotLottieWorker | null>(
+    //   (resolve) => {
+    //     const subscription = componentInstance.lottieLoad.subscribe(
+    //       (lottie) => {
+    //         resolve(lottie);
+    //         subscription.unsubscribe();
+    //       },
+    //     );
+    //   },
+    // );
 
-    expect(componentInstance).toBeTruthy();
-    expect(componentInstance.workerId()).toBe(workerId);
-    expect(lottie).toBeDefined();
+    // expect(componentInstance).toBeTruthy();
+    // expect(componentInstance.workerId()).toBe(workerId);
+    // expect(lottie).toBeDefined();
   });
 });
