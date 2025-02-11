@@ -47,22 +47,22 @@ Basic usage in your template:
 
 Available inputs for both components:
 
-| Input              | Type      | Default   | Description                           |
-|-------------------|-----------|-----------|---------------------------------------|
-| src               | string    | required  | URL or path to .lottie file          |
-| autoplay          | boolean   | true      | Auto-plays animation when loaded      |
-| loop              | boolean   | true      | Loops the animation                   |
-| autoResize        | boolean   | true      | Adjusts size to container             |
-| backgroundColor   | string    | '#FFFFFF' | Background color of the canvas        |
-| speed             | number    | undefined | Playback speed                        |
+| Input           | Type    | Default   | Description                      |
+| --------------- | ------- | --------- | -------------------------------- |
+| src             | string  | required  | URL or path to .lottie file      |
+| autoplay        | boolean | true      | Auto-plays animation when loaded |
+| loop            | boolean | true      | Loops the animation              |
+| autoResize      | boolean | true      | Adjusts size to container        |
+| backgroundColor | string  | '#FFFFFF' | Background color of the canvas   |
+| speed           | number  | undefined | Playback speed                   |
 
 ...
 
-Additional inputs for webworker component:
-| Input              | Type      | Default   | Description                           |
+Additional inputs for webworker component: | Input | Type | Default | Description |
 
 |-------------------|-----------|-----------|---------------------------------------|
-| workerId          | string    | required  | Unique identifier for the web worker service      |
+
+| workerId | string | required | Unique identifier for the web worker service |
 
 ## License
 
