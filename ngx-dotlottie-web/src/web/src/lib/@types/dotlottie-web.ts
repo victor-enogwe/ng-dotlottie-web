@@ -20,7 +20,6 @@ import type {
   StopEvent,
   UnfreezeEvent,
 } from '@lottiefiles/dotlottie-web';
-import { DotLottie, DotLottieWorker } from '@lottiefiles/dotlottie-web';
 
 export type AnimationFilename = string;
 
@@ -112,7 +111,6 @@ export interface DotLottieWebworkerComponentInput
 }
 
 export interface DotLottieWebComponentOutput {
-  readonly lottieInit: OutputEmitterRef<DotLottie | DotLottieWorker | null>;
   readonly lottieLoad: OutputEmitterRef<LoadEvent>;
   readonly lottieLoadError: OutputEmitterRef<LoadErrorEvent>;
   readonly lottiePlay: OutputEmitterRef<PlayEvent>;

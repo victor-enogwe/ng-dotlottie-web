@@ -7,7 +7,6 @@ import {
   ElementRef,
   HostListener,
   TemplateRef,
-  ViewChild,
   ViewContainerRef,
   ViewEncapsulation,
   afterNextRender,
@@ -17,11 +16,10 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import type {
   CompleteEvent,
   Config,
-  Data,
   DestroyEvent,
   FrameEvent,
   FreezeEvent,
@@ -41,6 +39,7 @@ import {
   ReplaySubject,
   Subject,
   distinctUntilChanged,
+  filter,
   iif,
   startWith,
   switchMap,
@@ -101,11 +100,15 @@ export class DotLottieWebComponent
 {
   protected Lottie = DotLottie;
 
-  @ViewChild('outlet', { read: ViewContainerRef })
-  private readonly outletRef?: ViewContainerRef;
+  private readonly outletRef = viewChild.required<unknown, ViewContainerRef>(
+    'outlet',
+    { read: ViewContainerRef },
+  );
 
-  @ViewChild('content', { read: TemplateRef })
-  private readonly contentRef?: TemplateRef<unknown>;
+  private readonly contentRef = viewChild.required<
+    unknown,
+    TemplateRef<unknown>
+  >('content', { read: TemplateRef });
 
   private readonly canvas =
     viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
@@ -117,7 +120,7 @@ export class DotLottieWebComponent
   private readonly transferState = inject(DotLottieWebTransferStateService);
 
   private readonly dotlottieConfigEvents$ = new ReplaySubject<{
-    name: keyof DotLottieWebComponentInputType;
+    name: Exclude<keyof DotLottieWebComponentInputType, 'src'>;
     value: unknown;
   }>();
 
@@ -148,9 +151,7 @@ export class DotLottieWebComponent
 
   stop = input<boolean, boolean>(false, { transform: this.transform('stop') });
 
-  src = input.required<Config['src'], Config['src']>({
-    transform: this.transform('src'),
-  });
+  src = input.required<Config['src']>();
 
   freeze = input<boolean, boolean>(false, {
     transform: this.transform('freeze'),
@@ -209,7 +210,6 @@ export class DotLottieWebComponent
     Config['useFrameInterpolation']
   >(undefined, { transform: this.transform('useFrameInterpolation') });
 
-  readonly lottieInit = output<DotLottie | null>();
   readonly lottieLoad = output<LoadEvent>();
   readonly lottieLoadError = output<LoadErrorEvent>();
   readonly lottiePlay = output<PlayEvent>();
@@ -223,70 +223,67 @@ export class DotLottieWebComponent
   readonly lottieUnfreeze = output<UnfreezeEvent>();
   readonly lottieRender = output<RenderEvent>();
 
+  private src$ = toObservable(this.src).pipe(
+    takeUntilDestroyed(),
+    filter((src = '') => src.length > 0),
+    distinctUntilChanged(),
+    tap((src) => this.setSrc(src)),
+  );
+
   constructor() {
     this.processEvents$.subscribe();
 
-    afterNextRender(() => this.viewChildReady$.next(true));
+    afterNextRender(() => this.src$.subscribe());
 
-    this.destroyRef.onDestroy(() => this.destroy());
-  }
-
-  private destroy(): void {
-    const dotlottie = this.dotlottie();
-    this.dotlottie.set(null);
-    dotlottie?.destroy(); // maybe promise
+    this.destroyRef.onDestroy(() => this.dotlottie()?.destroy());
   }
 
   private addListeners(dotlottie: DotLottie): void {
-    () => {
-      dotlottie.addEventListener('load', (event) =>
-        this.lottieLoad.emit(event),
-      );
+    dotlottie.addEventListener('load', (event) => {
+      this.lottieLoad.emit(event);
+      this.viewChildReady$.next(true);
+      this.dotlottie.set(dotlottie);
+    });
 
-      dotlottie.addEventListener('play', (event) =>
-        this.lottiePlay.emit(event),
-      );
+    dotlottie.addEventListener('play', (event) => this.lottiePlay.emit(event));
 
-      dotlottie.addEventListener('pause', (event) =>
-        this.lottiePause.emit(event),
-      );
+    dotlottie.addEventListener('pause', (event) =>
+      this.lottiePause.emit(event),
+    );
 
-      dotlottie.addEventListener('stop', (event) =>
-        this.lottieStop.emit(event),
-      );
+    dotlottie.addEventListener('stop', (event) => this.lottieStop.emit(event));
 
-      dotlottie.addEventListener('loop', (event) =>
-        this.lottieLoop.emit(event),
-      );
+    dotlottie.addEventListener('loop', (event) => this.lottieLoop.emit(event));
 
-      dotlottie.addEventListener('frame', (event) =>
-        this.lottieFrame.emit(event),
-      );
+    dotlottie.addEventListener('frame', (event) =>
+      this.lottieFrame.emit(event),
+    );
 
-      dotlottie.addEventListener('complete', (event) =>
-        this.lottieComplete.emit(event),
-      );
+    dotlottie.addEventListener('complete', (event) =>
+      this.lottieComplete.emit(event),
+    );
 
-      dotlottie.addEventListener('loadError', (event) =>
-        this.lottieLoadError.emit(event),
-      );
+    dotlottie.addEventListener('loadError', (event) =>
+      this.lottieLoadError.emit(event),
+    );
 
-      dotlottie.addEventListener('destroy', (event) =>
-        this.lottieDestroy.emit(event),
-      );
+    dotlottie.addEventListener('freeze', (event) =>
+      this.lottieFreeze.emit(event),
+    );
 
-      dotlottie.addEventListener('freeze', (event) =>
-        this.lottieFreeze.emit(event),
-      );
+    dotlottie.addEventListener('unfreeze', (event) =>
+      this.lottieUnfreeze.emit(event),
+    );
 
-      dotlottie.addEventListener('unfreeze', (event) =>
-        this.lottieUnfreeze.emit(event),
-      );
+    dotlottie.addEventListener('render', (event) =>
+      this.lottieRender.emit(event),
+    );
 
-      dotlottie.addEventListener('render', (event) =>
-        this.lottieRender.emit(event),
-      );
-    };
+    dotlottie.addEventListener('destroy', (event) => {
+      this.lottieDestroy.emit(event);
+      this.viewChildReady$.next(false);
+      this.dotlottie.set(null);
+    });
   }
 
   protected loadConfig(): Omit<Config, 'canvas' | 'data' | 'src'> {
@@ -310,7 +307,7 @@ export class DotLottieWebComponent
   }
 
   private setSrc(value: Config['src']): void {
-    this.destroy();
+    this.dotlottie()?.destroy();
 
     const data = value ? this.transferState.get(value) : undefined;
 
@@ -322,8 +319,11 @@ export class DotLottieWebComponent
       Object.assign(config, { src: value });
     }
 
-    this.outletRef?.clear();
-    this.outletRef?.createEmbeddedView(this.contentRef!);
+    const outletRef = this.outletRef();
+    const contentRef = this.contentRef();
+
+    outletRef.clear();
+    outletRef.createEmbeddedView(contentRef);
 
     const dotlottie = new this.Lottie({
       ...config,
@@ -331,69 +331,71 @@ export class DotLottieWebComponent
     });
 
     this.addListeners(dotlottie);
-    this.lottieInit.emit(dotlottie);
-    this.dotlottie.set(dotlottie);
   }
 
   private setBackgroundColor(value: Config['backgroundColor']): void {
-    if (value) this.dotlottie()?.setBackgroundColor(value);
+    this.dotlottie()?.setBackgroundColor(value!);
   }
 
   private setLayout(value: Config['layout']): void {
-    if (value) this.dotlottie()?.setLayout(value);
+    this.dotlottie()?.setLayout(value!);
   }
 
   private setMarker(value: Config['marker']): void {
-    if (value) this.dotlottie()?.setMarker(value);
+    this.dotlottie()?.setMarker(value!);
   }
 
   private setMode(value: Config['mode']): void {
-    if (value) this.dotlottie()?.setMode(value);
-  }
-
-  private setDevicePixelRatio(value: RenderConfig['devicePixelRatio']): void {
-    if (value) {
-      this.dotlottie()?.setRenderConfig({
-        ...(this.dotlottie()?.renderConfig ?? {}),
-        devicePixelRatio: value,
-      });
-    }
+    this.dotlottie()?.setMode(value!);
   }
 
   private setSegment(value: Config['segment']): void {
-    if (value) this.dotlottie()?.setSegment(...value);
+    this.dotlottie()?.setSegment(...value!);
   }
 
   private setSpeed(value: Config['speed']): void {
-    if (value) this.dotlottie()?.setSpeed(value);
+    this.dotlottie()?.setSpeed(value!);
   }
 
   private setThemeId(value: Config['themeId']): void {
-    if (value) this.dotlottie()?.setTheme(value);
-  }
-
-  private setStop(value: boolean = false): void {
-    if (value) this.dotlottie()?.stop();
+    this.dotlottie()?.setTheme(value!);
   }
 
   private setAutoResize(value: RenderConfig['autoResize'] = false): void {
-    if (value) {
-      this.dotlottie()?.setRenderConfig({
-        ...(this.dotlottie()?.renderConfig ?? {}),
-        autoResize: value,
-      });
-    }
+    this.dotlottie()?.setRenderConfig({
+      ...(this.dotlottie()?.renderConfig ?? {}),
+      autoResize: value,
+    });
   }
 
   private setFreezeOnOffscreen(
     value: RenderConfig['freezeOnOffscreen'] = false,
   ): void {
-    if (value) {
-      this.dotlottie()?.setRenderConfig({
-        ...(this.dotlottie()?.renderConfig ?? {}),
-        freezeOnOffscreen: value,
-      });
-    }
+    this.dotlottie()?.setRenderConfig({
+      ...(this.dotlottie()?.renderConfig ?? {}),
+      freezeOnOffscreen: value,
+    });
+  }
+
+  private setDevicePixelRatio(value: RenderConfig['devicePixelRatio']): void {
+    this.dotlottie()?.setRenderConfig({
+      ...(this.dotlottie()?.renderConfig ?? {}),
+      devicePixelRatio: value,
+    });
+  }
+
+  private setLoop(value: Config['loop'] = false): void {
+    this.dotlottie()?.setLoop(value);
+  }
+
+  private setUseFrameInterpolation(
+    value: Config['useFrameInterpolation'] = false,
+  ): void {
+    this.dotlottie()?.setUseFrameInterpolation(value);
+  }
+
+  private setStop(value: boolean = false): void {
+    if (value) this.dotlottie()?.stop();
   }
 
   private setFreeze(value: boolean = false): void {
@@ -412,18 +414,8 @@ export class DotLottieWebComponent
     }
   }
 
-  private setLoop(value: Config['loop'] = false): void {
-    this.dotlottie()?.setLoop(value);
-  }
-
-  private setUseFrameInterpolation(
-    value: Config['useFrameInterpolation'] = false,
-  ): void {
-    this.dotlottie()?.setUseFrameInterpolation(value);
-  }
-
   private transform<T>(
-    key: keyof DotLottieWebComponentInputType,
+    key: Exclude<keyof DotLottieWebComponentInputType, 'src'>,
   ): (value: T) => T {
     return (value: T) => {
       this.dotlottieConfigEvents$.next({ name: key, value });
@@ -436,12 +428,10 @@ export class DotLottieWebComponent
     name,
     value,
   }: {
-    name: keyof DotLottieWebComponentInputType;
+    name: Exclude<keyof DotLottieWebComponentInputType, 'src'>;
     value: unknown;
   }): void {
     switch (name) {
-      case 'src':
-        return this.setSrc(value as Config['src']);
       case 'backgroundColor':
         return this.setBackgroundColor(value as Config['backgroundColor']);
       case 'layout':
@@ -483,6 +473,8 @@ export class DotLottieWebComponent
 
   @HostListener('window:visibilitychange', ['$event.target'])
   protected onVisibilityChange(element: Document) {
+    if (!this.freezeOnOffscreen()) return;
+
     const visible = element.visibilityState === 'visible';
 
     if (visible) {
