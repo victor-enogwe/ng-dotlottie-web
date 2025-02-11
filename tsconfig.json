@@ -27,5 +27,6 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   },
-  "exclude": ["cypress.config.ts", "cypress", "node_modules", ""]
+  "include": ["ngx-dotlottie-web/**/*.ts", "ngx-dotlottie-demo/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

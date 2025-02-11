@@ -2,19 +2,14 @@
   "name": "ngx-dotlottie-web",
   "version": "0.0.0-beta12",
   "bugs": "git+https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
-  "dependencies": {
-    "tslib": "^2.3.0"
-  },
   "devDependencies": {
-    "@angular-devkit/schematics": "^19.1.6",
-    "@schematics/angular": "^19.1.6"
+    "@angular-devkit/schematics": "19.1.6",
+    "@jest/globals": "29.7.0",
+    "@schematics/angular": "19.1.6",
+    "tslib": "2.8.1"
   },
   "engines": {
     "node": ">=20.0.0"
-  },
-  "publishConfig": {
-    "access": "public",
-    "provenance": true
   },
   "homepage": "https://github.com/victor-enogwe/ngx-dotlottie-web#readme",
   "keywords": [
@@ -45,6 +40,10 @@
     "@angular/core": ">=18.0.0",
     "@lottiefiles/dotlottie-web": ">=0.28.0",
     "rxjs": ">=6.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "repository": "victor-enogwe/ngx-dotlottie-web.git",
   "schematics": "./schematics/collection.json",
