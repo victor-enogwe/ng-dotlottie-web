@@ -35,7 +35,7 @@ const globalConfig = {
       'error',
       {
         code: 80,
-        ignorePattern: '^(import\\s.+\\sfrom\\s.+|\\} from)',
+        ignorePattern: '^import [^,]+ from |^export | implements | `.{30,}`',
         ignoreTemplateLiterals: true,
         ignoreRegExpLiterals: true,
         ignoreTrailingComments: true,
@@ -106,8 +106,8 @@ const javascriptConfig = {
 
 /** @type {import('eslint').Linter.Config} */
 const typescriptConfig = {
-  name: 'typescript frontend config',
-  files: ['**/apps/frontend/**/*.ts'],
+  name: 'typescript config',
+  files: ['**/*.ts'],
   ignores: globalIgnores.ignores,
   plugins: {
     ...javascriptConfig.plugins,
@@ -122,6 +122,11 @@ const typescriptConfig = {
     parserOptions: {
       warnOnUnsupportedTypeScriptVersion: true,
       tsconfigRootDir: import.meta.dirname,
+      project: [
+        'tsconfig.json',
+        'ngx-dotlottie-web/*/tsconfig.*.json',
+        'ngx-dotlottie-demo/*/tsconfig.*.json',
+      ],
     },
   },
   rules: {
