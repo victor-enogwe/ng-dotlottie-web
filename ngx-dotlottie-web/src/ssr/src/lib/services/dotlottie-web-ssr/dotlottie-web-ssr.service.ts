@@ -1,5 +1,5 @@
-import { inject, Injectable, makeStateKey, TransferState } from '@angular/core';
-import { readFile } from 'node:fs';
+import { inject, Injectable, TransferState } from '@angular/core';
+import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { AnimationFilename } from '../../../../../common/src/lib/@types/dotlottie-common';
 import { DotLottieWebTransferStateService } from '../../../../../common/src/lib/services/dotlottie-web-transfer-state/dotlottie-web-transfer-state.service';
@@ -7,7 +7,7 @@ import {
   AnimationData,
   DotLottieWebSSROptions,
   PathToAnimation,
-} from '../../@types/dotlottie-web';
+} from '../../@types/dotlottie-ssr';
 import { DOT_LOTTIE_WEB_SSR_OPTIONS } from '../../constants';
 import { setWasmURL } from '../../utils/set-wasm/set-wasm';
 
@@ -20,59 +20,55 @@ declare const ngDevMode: boolean;
 @Injectable({ providedIn: 'root' })
 export class DotLottieWebSSRService {
   private cache = new Map<string, AnimationData>();
+
   private readonly transferStateService = inject(
     DotLottieWebTransferStateService,
   );
 
-  private readFileWithAnimationData(
+  private async readFileWithAnimationData(
     path: string,
   ): Promise<AnimationData | undefined> {
-    return this.cache.has(path)
-      ? Promise.resolve(this.cache.get(path))
-      : new Promise((resolve, reject) => {
-          readFile(path, (error, buffer) => {
-            if (error) {
-              reject(error);
-            } else {
-              const data = buffer.toString();
-              this.cache.set(path, data);
-              resolve(data);
-            }
-          });
-        });
+    const existsInCache = this.cache.has(path);
+
+    if (existsInCache) return Promise.resolve(this.cache.get(path));
+
+    const buffer = await readFile(path);
+    const dotLottieExt = path.endsWith('.lottie');
+
+    const data = dotLottieExt
+      ? JSON.stringify(buffer.toJSON())
+      : buffer.toString();
+
+    this.cache.set(path, data);
+
+    return data;
   }
 
-  private readAndTransferAnimationData(
+  private async readAndTransferAnimationData(
     transferState: TransferState,
     animations: AnimationFilename[],
     pathsToAnimations: PathToAnimation[],
-  ): Promise<void>[] {
-    const sources: Promise<void>[] = [];
-
-    for (let i = 0, length = animations.length; i < length; i++) {
-      const path = pathsToAnimations[i];
-
-      const source = this.readFileWithAnimationData(path)
-        .then((animationData) => {
-          this.transferAnimationData(
-            transferState,
-            animations[i],
-            animationData!,
-          );
-        })
-        .catch((error) => {
-          if (typeof ngDevMode !== 'undefined' && ngDevMode) {
-            console.error(
-              `Failed to read the following file ${path}. Error: `,
-              error,
-            );
-          }
-        });
-
-      sources.push(source);
-    }
-
-    return sources;
+  ): Promise<void[]> {
+    return Promise.all(
+      animations.map((animation, index) =>
+        this.readFileWithAnimationData(pathsToAnimations[index])
+          .then((animationData) =>
+            this.transferAnimationData(
+              transferState,
+              animation,
+              animationData!,
+            ),
+          )
+          .catch((error) => {
+            if (typeof ngDevMode !== 'undefined' && ngDevMode) {
+              console.error(
+                `Failed to read file(${pathsToAnimations[index]}). Error: `,
+                error,
+              );
+            }
+          }),
+      ),
+    );
   }
 
   private transferAnimationData(
@@ -80,14 +76,12 @@ export class DotLottieWebSSRService {
     animation: AnimationFilename,
     animationData: AnimationData,
   ): void {
-    animation =
+    const key =
       this.transferStateService.transformAnimationFilenameToKey(animation);
-
-    const key = makeStateKey(animation);
 
     if (state.hasKey(key)) return;
 
-    state.set(key, JSON.parse(animationData));
+    state.set<Record<string, unknown>>(key, JSON.parse(animationData));
   }
 
   private resolveLottiePaths({
@@ -106,12 +100,10 @@ export class DotLottieWebSSRService {
 
     const pathsToAnimations = this.resolveLottiePaths(options);
 
-    const sources = this.readAndTransferAnimationData(
+    await this.readAndTransferAnimationData(
       transferState,
       options.preloadAnimations.animations,
       pathsToAnimations,
     );
-
-    await Promise.all(sources);
   }
 }
