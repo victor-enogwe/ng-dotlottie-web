@@ -210,6 +210,7 @@ export class DotLottieWebComponent
     Config['useFrameInterpolation']
   >(undefined, { transform: this.transform('useFrameInterpolation') });
 
+  readonly lottieInit = output<DotLottie | null>();
   readonly lottieLoad = output<LoadEvent>();
   readonly lottieLoadError = output<LoadErrorEvent>();
   readonly lottiePlay = output<PlayEvent>();
@@ -331,6 +332,7 @@ export class DotLottieWebComponent
     });
 
     this.addListeners(dotlottie);
+    this.lottieInit.emit(dotlottie);
   }
 
   private setBackgroundColor(value: Config['backgroundColor']): void {
