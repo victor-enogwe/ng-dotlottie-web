@@ -8,8 +8,8 @@ import {
   provideClientHydration,
   withEventReplay,
 } from '@angular/platform-browser';
-import { routes } from './app.routes';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
