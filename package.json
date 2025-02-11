@@ -11,56 +11,34 @@
     "directory": "ngx-dotlottie-web"
   },
   "bugs": "https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
-  "contributors": [
-    "Victor Enogwe <victor.enogwe@gmail.com>"
-  ],
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ],
-    "rules": {
-      "type-enum": [
-        2,
-        "always",
-        [
-          "feat",
-          "fix",
-          "docs",
-          "chore",
-          "style",
-          "refactor",
-          "ci",
-          "test",
-          "perf",
-          "revert",
-          "vercel"
-        ]
-      ]
-    }
-  },
-  "depcheck": {
-    "ignoreBinPackage": false,
-    "ignores": [
-      "@angular-devkit/build-angular",
-      "@angular/build",
-      "@angular-builders/jest",
-      "@angular/compiler-cli",
-      "@angular/platform-browser-dynamic",
-      "@commitlint/cli",
-      "@commitlint/config-conventional",
-      "@cypress/schematic",
-      "@lottiefiles/dotlottie-web",
-      "@types/node",
-      "@jest/globals",
-      "semantic-release",
-      "ng-packagr",
-      "jest",
-      "tslib"
-    ],
-    "ignorePatterns": [
-      "dist",
-      "coverage"
-    ]
+  "contributors": ["Victor Enogwe <victor.enogwe@gmail.com>"],
+  "scripts": {
+    "build": "ng build ngx-dotlottie-web",
+    "build:demo": "ng build ngx-dotlottie-demo",
+    "commitlint": "commitlint",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "depcheck": "depcheck --quiet",
+    "e2e": "ng e2e",
+    "format": "prettier --log-level error --write --ignore-unknown --cache-location node_modules/.cache .",
+    "lint": "eslint --cache --cache-location node_modules/.cache --fix .",
+    "ng": "ng",
+    "postinstall": "syncpack fix-mismatches",
+    "postversion": "git push && git push --tags",
+    "preinstall": "syncpack format",
+    "prepare": "pnpm build",
+    "prepublishOnly": "npm test && pnpm lint",
+    "preversion": "pnpm lint",
+    "publish:ngx-dotlottie-web": "pnpm publish dist/ngx-dotlottie-web --access public --provenance --no-git-checks",
+    "serve:ssr:ngx-dotlottie-demo": "node dist/ngx-dotlottie-demo/server/server.mjs",
+    "start": "ng serve",
+    "test": "ng test --project ngx-dotlottie-web",
+    "test:e2e": "ng e2e --project ngx-dotlottie-demo",
+    "tsc": "tsc --noEmit",
+    "update:deps": "syncpack update",
+    "use": "pnpm --filter",
+    "version": "pnpm format && git add -A src",
+    "watch": "ng build --watch --configuration development"
   },
   "dependencies": {
     "@angular/animations": "19.1.5",
@@ -118,18 +96,54 @@
     "typescript": "5.7.3",
     "typescript-eslint": "8.23.0"
   },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"],
+    "rules": {
+      "type-enum": [
+        2,
+        "always",
+        [
+          "feat",
+          "fix",
+          "docs",
+          "chore",
+          "style",
+          "refactor",
+          "ci",
+          "test",
+          "perf",
+          "revert",
+          "vercel"
+        ]
+      ]
+    }
+  },
+  "depcheck": {
+    "ignoreBinPackage": false,
+    "ignores": [
+      "@angular-devkit/build-angular",
+      "@angular/build",
+      "@angular-builders/jest",
+      "@angular/compiler-cli",
+      "@angular/platform-browser-dynamic",
+      "@commitlint/cli",
+      "@commitlint/config-conventional",
+      "@cypress/schematic",
+      "@lottiefiles/dotlottie-web",
+      "@types/node",
+      "@jest/globals",
+      "semantic-release",
+      "ng-packagr",
+      "jest",
+      "tslib"
+    ],
+    "ignorePatterns": ["dist", "coverage"]
+  },
   "engines": {
     "node": ">=20.0.0"
   },
-  "files": [
-    "ngx-dotlottie-web/**/*"
-  ],
-  "keywords": [
-    "boilerplate",
-    "module",
-    "npm",
-    "typescript"
-  ],
+  "files": ["ngx-dotlottie-web/**/*"],
+  "keywords": ["boilerplate", "module", "npm", "typescript"],
   "main": "lib/index.js",
   "packageManager": "pnpm@9.15.4",
   "pnpm": {
@@ -145,34 +159,6 @@
     "access": "public",
     "provenance": true
   },
-  "scripts": {
-    "build": "ng build ngx-dotlottie-web",
-    "build:demo": "ng build ngx-dotlottie-demo",
-    "commitlint": "commitlint",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run",
-    "depcheck": "depcheck --quiet",
-    "e2e": "ng e2e",
-    "format": "prettier --log-level error --write --ignore-unknown --cache-location node_modules/.cache .",
-    "lint": "eslint --cache --cache-location node_modules/.cache --fix .",
-    "ng": "ng",
-    "postinstall": "syncpack fix-mismatches",
-    "postversion": "git push && git push --tags",
-    "preinstall": "syncpack format",
-    "prepare": "pnpm build",
-    "prepublishOnly": "npm test && pnpm lint",
-    "preversion": "pnpm lint",
-    "publish:ngx-dotlottie-web": "pnpm publish dist/ngx-dotlottie-web --access public --provenance --no-git-checks",
-    "serve:ssr:ngx-dotlottie-demo": "node dist/ngx-dotlottie-demo/server/server.mjs",
-    "start": "ng serve",
-    "test": "ng test --project ngx-dotlottie-web",
-    "test:e2e": "ng e2e --project ngx-dotlottie-demo",
-    "tsc": "tsc --noEmit",
-    "update:deps": "syncpack update",
-    "use": "pnpm --filter",
-    "version": "pnpm format && git add -A src",
-    "watch": "ng build --watch --configuration development"
-  },
   "syncpack": {
     "sortPackages": true,
     "formatBugs": true,
@@ -183,20 +169,7 @@
         "strategy": "versionsByName"
       }
     },
-    "source": [
-      "package.json",
-      "ngx-dotlottie-web/package.json"
-    ],
-    "sortAz": [
-      "bin",
-      "contributors",
-      "dependencies",
-      "devDependencies",
-      "keywords",
-      "peerDependencies",
-      "resolutions",
-      "scripts"
-    ],
+    "source": ["package.json", "ngx-dotlottie-web/package.json"],
     "sortExports": [
       "types",
       "node-addons",
@@ -208,6 +181,16 @@
       "production",
       "default"
     ],
+    "sortAz": [
+      "bin",
+      "contributors",
+      "keywords",
+      "scripts",
+      "dependencies",
+      "devDependencies",
+      "peerDependencies",
+      "resolutions"
+    ],
     "sortFirst": [
       "name",
       "description",
@@ -217,43 +200,29 @@
       "license",
       "repository",
       "bugs",
-      "contributors"
+      "contributors",
+      "scripts",
+      "dependencies",
+      "devDependencies",
+      "peerDependencies"
     ],
     "versionGroups": [
       {
-        "dependencies": [
-          "**"
-        ],
-        "dependencyTypes": [
-          "dev",
-          "peer",
-          "prod"
-        ],
-        "packages": [
-          "**"
-        ],
+        "dependencies": ["**"],
+        "dependencyTypes": ["dev", "peer", "prod"],
+        "packages": ["**"],
         "policy": "sameRange",
         "preferVersion": "highestSemver"
       },
       {
         "label": "Versions in engines field should all match",
-        "dependencyTypes": [
-          "engines"
-        ],
-        "dependencies": [
-          "**"
-        ],
-        "packages": [
-          "**"
-        ]
+        "dependencyTypes": ["engines"],
+        "dependencies": ["**"],
+        "packages": ["**"]
       },
       {
-        "dependencies": [
-          "@types/**"
-        ],
-        "dependencyTypes": [
-          "!dev"
-        ],
+        "dependencies": ["@types/**"],
+        "dependencyTypes": ["!dev"],
         "isBanned": true,
         "label": "@types packages should only be under devDependencies"
       }
