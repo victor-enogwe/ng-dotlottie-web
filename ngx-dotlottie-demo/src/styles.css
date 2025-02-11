@@ -8,3 +8,9 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.animation {
+  min-height: 262px;
+  max-height: 262px;
+  height: 262px;
+}
