@@ -1,11 +1,6 @@
-import {
-  inject,
-  Injectable,
-  makeStateKey,
-  StateKey,
-  TransferState,
-} from '@angular/core';
-import { AnimationFilename } from '../../@types/dotlottie-common';
+import type { StateKey } from '@angular/core';
+import { inject, Injectable, makeStateKey, TransferState } from '@angular/core';
+import type { AnimationFilename } from '../../@types/dotlottie-common';
 
 @Injectable({ providedIn: 'root' })
 export class DotLottieWebTransferStateService {

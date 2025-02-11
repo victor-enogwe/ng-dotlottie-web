@@ -6,7 +6,7 @@ import {
   PLATFORM_ID,
   provideAppInitializer,
 } from '@angular/core';
-import { DotLottieWebSSROptions } from '../@types/dotlottie-ssr';
+import type { DotLottieWebSSROptions } from '../@types/dotlottie-ssr';
 import { DOT_LOTTIE_WEB_SSR_OPTIONS } from '../constants';
 import { DotLottieWebSSRService } from '../services/dotlottie-web-ssr/dotlottie-web-ssr.service';
 
@@ -28,7 +28,7 @@ export function provideDotLottieWebSSROptions(
   return makeEnvironmentProviders([
     {
       provide: DOT_LOTTIE_WEB_SSR_OPTIONS,
-      useFactory: () => {
+      useFactory: (): DotLottieWebSSROptions => {
         validatePlatform();
 
         return options;

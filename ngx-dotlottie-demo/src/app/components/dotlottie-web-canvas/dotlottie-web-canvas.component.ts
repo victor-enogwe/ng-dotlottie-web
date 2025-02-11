@@ -14,7 +14,7 @@ import { MatInput } from '@angular/material/input';
 import { DotLottieWebComponent } from '../../../../../ngx-dotlottie-web/src/web/src/lib/components/dotlottie-web/dotlottie-web.component';
 import { DotLottieWebWorkerComponent } from '../../../../../ngx-dotlottie-web/src/webworker/src/lib/components/dotlottie-webworker/dotlottie-webworker.component';
 import { DotlottieWebControlsComponent } from '../dotlottie-web-controls/dotlottie-web-controls.component';
-import { DotLottieWebComponentInputType } from '../../../../../ngx-dotlottie-web/src/web/src/lib/@types/dotlottie-web';
+import type { DotLottieWebComponentInputType } from '../../../../../ngx-dotlottie-web/src/web/src/lib/@types/dotlottie-web';
 
 @Component({
   selector: 'dotlottie-web-canvas',

@@ -7,14 +7,14 @@ import {
   output,
   ViewEncapsulation,
 } from '@angular/core';
+import type { MatButtonToggleChange } from '@angular/material/button-toggle';
 import {
   MatButtonToggle,
-  MatButtonToggleChange,
   MatButtonToggleGroup,
 } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import { DotLottieWebComponentInputType } from '../../../../../ngx-dotlottie-web/src/web/src/lib/@types/dotlottie-web';
+import type { DotLottieWebComponentInputType } from '../../../../../ngx-dotlottie-web/src/web/src/lib/@types/dotlottie-web';
 
 @Component({
   selector: 'dotlottie-web-controls',
@@ -29,7 +29,7 @@ import { DotLottieWebComponentInputType } from '../../../../../ngx-dotlottie-web
 export class DotlottieWebControlsComponent {
   name = input.required<string>();
 
-  change = output<{
+  dotlottieChange = output<{
     name: keyof DotLottieWebComponentInputType;
     active: boolean;
   }>();
@@ -49,7 +49,12 @@ export class DotlottieWebControlsComponent {
     { name: 'useFrameInterpolation', icon: '60fps' },
   ];
 
-  onChange(change: MatButtonToggleChange) {
-    this.change.emit(change.value);
+  onChange(change: MatButtonToggleChange): void {
+    this.dotlottieChange.emit(
+      change.value as {
+        name: keyof DotLottieWebComponentInputType;
+        active: boolean;
+      },
+    );
   }
 }

@@ -1,5 +1,5 @@
-import { NgClass } from '@angular/common';
-import {
+import type { NgClass } from '@angular/common';
+import type {
   InputSignal,
   InputSignalWithTransform,
   OutputEmitterRef,
@@ -19,8 +19,9 @@ import type {
   RenderEvent,
   StopEvent,
   UnfreezeEvent,
+  DotLottie,
+  DotLottieWorker,
 } from '@lottiefiles/dotlottie-web';
-import { DotLottie, DotLottieWorker } from '@lottiefiles/dotlottie-web';
 
 export type AnimationFilename = string;
 

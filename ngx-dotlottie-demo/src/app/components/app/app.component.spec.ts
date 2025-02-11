@@ -15,7 +15,7 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'ngx-dotlottie-demo' title`, () => {
+  it("should have the 'ngx-dotlottie-demo' title", () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('ngx-dotlottie-demo');

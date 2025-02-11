@@ -1,10 +1,10 @@
 import { NgClass, NgTemplateOutlet } from '@angular/common';
+import type { ElementRef } from '@angular/core';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  ElementRef,
   HostListener,
   TemplateRef,
   ViewContainerRef,
@@ -46,7 +46,7 @@ import {
   tap,
 } from 'rxjs';
 import { DotLottieWebTransferStateService } from '../../../../../common/src/lib/services/dotlottie-web-transfer-state/dotlottie-web-transfer-state.service';
-import {
+import type {
   DotLottieWebComponentInput,
   DotLottieWebComponentInputType,
   DotLottieWebComponentOutput,
@@ -426,6 +426,7 @@ export class DotLottieWebComponent
     };
   }
 
+  // eslint-disable-next-line complexity
   private processEvents({
     name,
     value,
@@ -470,11 +471,13 @@ export class DotLottieWebComponent
         return this.setUseFrameInterpolation(
           value as Config['useFrameInterpolation'],
         );
+      default:
+        return undefined;
     }
   }
 
   @HostListener('window:visibilitychange', ['$event.target'])
-  protected onVisibilityChange(element: Document) {
+  protected onVisibilityChange(element: Document): void {
     if (!this.freezeOnOffscreen()) return;
 
     const visible = element.visibilityState === 'visible';

@@ -1,9 +1,9 @@
 import { inject, Injectable, TransferState } from '@angular/core';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { AnimationFilename } from '../../../../../common/src/lib/@types/dotlottie-common';
+import type { AnimationFilename } from '../../../../../common/src/lib/@types/dotlottie-common';
 import { DotLottieWebTransferStateService } from '../../../../../common/src/lib/services/dotlottie-web-transfer-state/dotlottie-web-transfer-state.service';
-import {
+import type {
   AnimationData,
   DotLottieWebSSROptions,
   PathToAnimation,
@@ -61,6 +61,7 @@ export class DotLottieWebSSRService {
           )
           .catch((error) => {
             if (typeof ngDevMode !== 'undefined' && ngDevMode) {
+              // eslint-disable-next-line no-console
               console.error(
                 `Failed to read file(${pathsToAnimations[index]}). Error: `,
                 error,
@@ -81,7 +82,10 @@ export class DotLottieWebSSRService {
 
     if (state.hasKey(key)) return;
 
-    state.set<Record<string, unknown>>(key, JSON.parse(animationData));
+    state.set<Record<string, unknown>>(
+      key,
+      JSON.parse(animationData) as Record<string, unknown>,
+    );
   }
 
   private resolveLottiePaths({

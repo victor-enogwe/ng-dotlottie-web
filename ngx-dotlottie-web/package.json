@@ -11,14 +11,24 @@
     "directory": "ngx-dotlottie-web"
   },
   "bugs": "git+https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
-  "contributors": [
-    "Victor Enogwe <victor.enogwe@gmail.com>"
-  ],
+  "contributors": ["Victor Enogwe <victor.enogwe@gmail.com>"],
+  "scripts": {
+    "build": "tsc -p tsconfig.schematics.json",
+    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../dist/ngx-dotlottie-web/"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
   "devDependencies": {
     "@angular-devkit/schematics": "19.1.6",
     "@jest/globals": "29.7.0",
-    "@schematics/angular": "19.1.6",
-    "tslib": "2.8.1"
+    "@schematics/angular": "19.1.6"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=18.0.0",
+    "@angular/core": ">=18.0.0",
+    "@lottiefiles/dotlottie-web": ">=0.28.0",
+    "rxjs": ">=6.0.0"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -45,20 +55,10 @@
   "ng-add": {
     "save": "dependencies"
   },
-  "peerDependencies": {
-    "@angular/common": ">=18.0.0",
-    "@angular/core": ">=18.0.0",
-    "@lottiefiles/dotlottie-web": ">=0.28.0",
-    "rxjs": ">=6.0.0"
-  },
   "publishConfig": {
     "access": "public",
     "provenance": true
   },
   "schematics": "./schematics/collection.json",
-  "scripts": {
-    "build": "tsc -p tsconfig.schematics.json",
-    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../dist/ngx-dotlottie-web/"
-  },
   "sideEffects": false
 }

@@ -6,11 +6,11 @@ import {
   ViewEncapsulation,
   input,
 } from '@angular/core';
-import type { Config } from '@lottiefiles/dotlottie-web';
-import { DotLottie, DotLottieWorker } from '@lottiefiles/dotlottie-web';
-import { DotLottieWebworkerComponentInput } from '../../../../../web/src/lib/@types/dotlottie-web';
+import type { Config, DotLottie } from '@lottiefiles/dotlottie-web';
+import { DotLottieWorker } from '@lottiefiles/dotlottie-web';
+import type { DotLottieWebworkerComponentInput } from '../../../../../web/src/lib/@types/dotlottie-web';
 import { DotLottieWebComponent } from '../../../../../web/src/lib/components/dotlottie-web/dotlottie-web.component';
-import { DotLottieWorkerId } from '../../@types/dotlottie-webworker';
+import type { DotLottieWorkerId } from '../../@types/dotlottie-webworker';
 
 @Component({
   selector: 'dotlottie-webworker',

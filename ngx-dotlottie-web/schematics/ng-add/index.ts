@@ -1,6 +1,6 @@
-import { Rule } from '@angular-devkit/schematics';
+import type { Rule } from '@angular-devkit/schematics';
 import { addRootImport } from '@schematics/angular/utility';
-import { Schema } from './schema';
+import type { Schema } from './schema';
 
 export function ngAdd(options: Schema): Rule {
   return addRootImport(
