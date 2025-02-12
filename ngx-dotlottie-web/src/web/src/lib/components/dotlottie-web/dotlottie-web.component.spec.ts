@@ -174,6 +174,10 @@ describe('DotLottieWebComponent', () => {
       const fixture = createComponent({ src, canvasClass: 'test' });
       const { componentInstance, debugElement } = fixture;
 
+      await fetch(src).then((response) =>
+        response.arrayBuffer().then(console.log),
+      );
+
       await fixture.whenRenderingDone();
 
       // const canvas = getCanvas(debugElement);
