@@ -120,7 +120,10 @@ describe('DotLottieWebComponent', () => {
   }
 
   describe('Client Side Rendering', () => {
-    const src = new URL('lottie.json', fixturesDirExternal).href;
+    const src = new URL(
+      'https://lottie.host/0cbdb3ef-2fa5-4d1d-9e4e-f66c879e010d/D0bRr9d93F.lottie',
+      fixturesDirExternal,
+    ).href;
 
     beforeEach(async () => {
       await TestBed.configureTestingModule({
@@ -172,7 +175,7 @@ describe('DotLottieWebComponent', () => {
 
     it.only('should should render a lottie file', async () => {
       const fixture = createComponent({ src, canvasClass: 'test' });
-      const { componentInstance, debugElement } = fixture;
+      const { componentInstance } = fixture;
 
       await fetch(src).then((response) =>
         response.arrayBuffer().then(console.log),

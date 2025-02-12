@@ -7,7 +7,7 @@ const esmPreset = ngPreset.createCjsPreset();
 module.exports = {
   ...esmPreset,
   testEnvironment: resolve(__dirname, 'jest.env.js'),
-  rootDir: resolve(__dirname, 'ngx-dotlottie-web'),
+  rootDir: resolve(__dirname),
   moduleFileExtensions: ['js', 'json', 'ts'],
   collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: resolve(__dirname, './coverage'),

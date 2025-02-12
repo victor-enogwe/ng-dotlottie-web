@@ -52,7 +52,7 @@
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
-            "tsConfig": "tsconfig.spec.json",
+            "tsConfig": "ngx-dotlottie-web/tsconfig.spec.json",
             "configPath": "../jest.config.js"
           }
         }
@@ -133,7 +133,7 @@
           "builder": "@angular-builders/jest:run",
           "options": {
             "polyfills": [],
-            "tsConfig": "tsconfig.spec.json",
+            "tsConfig": "ngx-dotlottie-web/tsconfig.spec.json",
             "configPath": "../jest.config.js"
           }
         },

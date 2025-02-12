@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/spec",
+    "types": [
+      "node",
+      "jest"
+    ]
+  },
+  "include": [
+    "ngx-dotlottie-web/**/*.ts",
+    "ngx-dotlottie-demo/**/*.ts",
+    "jest-loader.js",
+    "jest.env.js",
+    "jest.config.js",
+    "jest.setup.js",
+  ],
+}
