@@ -11,8 +11,8 @@
     "ngx-dotlottie-web/**/*.ts",
     "ngx-dotlottie-demo/**/*.ts",
     "jest-loader.js",
-    "jest.env.js",
-    "jest.config.js",
-    "jest.setup.js",
-  ],
+    "jest.env.ts",
+    "jest.config.ts",
+    "jest.setup.ts"
+  ]
 }

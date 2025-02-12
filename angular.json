@@ -48,13 +48,6 @@
             }
           },
           "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-builders/jest:run",
-          "options": {
-            "tsConfig": "ngx-dotlottie-web/tsconfig.spec.json",
-            "configPath": "../jest.config.js"
-          }
         }
       }
     },
@@ -128,14 +121,6 @@
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
-        },
-        "test": {
-          "builder": "@angular-builders/jest:run",
-          "options": {
-            "polyfills": [],
-            "tsConfig": "ngx-dotlottie-web/tsconfig.spec.json",
-            "configPath": "../jest.config.js"
-          }
         },
         "cypress-run": {
           "builder": "@cypress/schematic:cypress",

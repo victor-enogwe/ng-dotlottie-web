@@ -5,6 +5,7 @@
   "homepage": "https://github.com/victor-enogwe/ngx-dotlottie-web#readme",
   "author": "Victor Enogwe <victor.enogwe@gmail.com>",
   "license": "MIT",
+  "private": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/victor-enogwe/ngx-dotlottie-web.git",
@@ -34,7 +35,7 @@
     "publish:ngx-dotlottie-web": "pnpm publish dist/ngx-dotlottie-web --access public --provenance --no-git-checks",
     "serve:ssr:ngx-dotlottie-demo": "node dist/ngx-dotlottie-demo/server/server.mjs",
     "start": "ng serve",
-    "test": "ng test --project ngx-dotlottie-web",
+    "test": "jest",
     "test:e2e": "ng e2e --project ngx-dotlottie-demo",
     "tsc": "tsc --noEmit",
     "update:deps": "syncpack update",
@@ -54,12 +55,10 @@
     "@angular/platform-server": "19.1.5",
     "@angular/router": "19.1.5",
     "@angular/ssr": "19.1.6",
-    "cypress": "14.0.2",
     "rxjs": "^7.8.1",
     "tslib": "2.8.1"
   },
   "devDependencies": {
-    "@angular-builders/jest": "19.0.0",
     "@angular-devkit/build-angular": "19.1.6",
     "@angular-eslint/eslint-plugin": "19.1.0",
     "@angular-eslint/eslint-plugin-template": "19.1.0",
@@ -80,8 +79,8 @@
     "@types/jest": "29.5.14",
     "@types/node": "22.13.1",
     "@typescript-eslint/eslint-plugin": "8.23.0",
-    "axios": "1.7.9",
     "canvas": "2.11.1",
+    "cypress": "14.0.2",
     "depcheck": "1.4.7",
     "eslint": "9.20.0",
     "eslint-config-prettier": "10.0.1",
@@ -93,14 +92,12 @@
     "jest": "29.7.0",
     "jest-environment-jsdom": "29.7.0",
     "jest-preset-angular": "14.4.2",
-    "jsdom": "20.0.3",
     "ng-packagr": "19.1.2",
     "prettier": "3.4.2",
     "semantic-release": "24.2.2",
     "syncpack": "13.0.2",
     "typescript": "5.7.3",
-    "typescript-eslint": "8.23.0",
-    "whatwg-fetch": "3.6.20"
+    "typescript-eslint": "8.23.0"
   },
   "commitlint": {
     "extends": [
@@ -137,12 +134,9 @@
       "@commitlint/cli",
       "@commitlint/config-conventional",
       "@cypress/schematic",
-      "@lottiefiles/dotlottie-web",
       "@types/node",
-      "@jest/globals",
       "semantic-release",
       "ng-packagr",
-      "jest",
       "tslib"
     ],
     "ignorePatterns": [
@@ -153,9 +147,6 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "files": [
-    "ngx-dotlottie-web/**/*"
-  ],
   "keywords": [
     "boilerplate",
     "module",
@@ -172,7 +163,6 @@
       "rimraf": "6.0.1"
     }
   },
-  "private": false,
   "publishConfig": {
     "access": "public",
     "provenance": true
@@ -219,6 +209,7 @@
       "homepage",
       "author",
       "license",
+      "private",
       "repository",
       "bugs",
       "contributors",

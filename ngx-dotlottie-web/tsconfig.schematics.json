@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.lib.json",
   "compilerOptions": {
     "baseUrl": ".",
     "lib": ["ES2022", "DOM"],
@@ -12,12 +13,10 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "rootDir": "schematics",
-    "outDir": "../../dist/ngx-dotlottie-web/schematics",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "es6",
     "types": ["node", "jest"]
   },
   "include": ["schematics/**/*"],

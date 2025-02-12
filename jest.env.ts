@@ -7,7 +7,10 @@ export default class WASMEnvironment extends TestEnvironment {
    * @param {RequestInit} init
    * @returns {Promise<Response>}
    */
-  async fetch(input, init) {
+  async fetch(
+    input: string | URL | globalThis.Request,
+    init?: RequestInit,
+  ): Promise<globalThis.Response> {
     const response = await globalThis.fetch(input, {
       ...init,
       cache: 'default',
@@ -16,7 +19,7 @@ export default class WASMEnvironment extends TestEnvironment {
     return response;
   }
 
-  async setup() {
+  override async setup(): Promise<void> {
     await super.setup();
 
     this.global.Blob = globalThis.Blob;
@@ -28,6 +31,6 @@ export default class WASMEnvironment extends TestEnvironment {
     this.global.TextEncoder = globalThis.TextEncoder;
     this.global.TextDecoder = globalThis.TextDecoder;
     this.global.XMLHttpRequest = globalThis.XMLHttpRequest;
-    this.global.fetch = this.fetch;
+    this.global.fetch = this.fetch.bind(this);
   }
 }

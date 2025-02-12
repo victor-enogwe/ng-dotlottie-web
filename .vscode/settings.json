@@ -72,7 +72,7 @@
   "editor.trimAutoWhitespace": true,
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "package.json": "pnpm-workspace.yaml, pnpm-lock.yaml, package-lock.json, README.md, .gitignore, .prettierignore, .npmrc, .nvmrc, tsconfig.json, prettier.config.*js, .eslintrc.*js, eslint.config.*js, .editorconfig, .eslintcache, .eslintignore, tsconfig.*, .eslintrc.json, .env.*, .continuerc.json, angular.json, ng-package.json, vite.config.*ts, lefthook.yml,  .lefthook.sh, renovate.json, LICENSE.md, SECURITY.md, cypress.config.ts, jest.config.js, jest.setup.js, jest.env.js",
+    "package.json": "pnpm-workspace.yaml, pnpm-lock.yaml, package-lock.json, README.md, .gitignore, .prettierignore, .npmrc, .nvmrc, tsconfig.json, prettier.config.*js, .eslintrc.*js, eslint.config.*js, .editorconfig, .eslintcache, .eslintignore, tsconfig.*, .eslintrc.json, .env.*, .continuerc.json, angular.json, ng-package.json, vite.config.*ts, lefthook.yml,  .lefthook.sh, renovate.json, LICENSE.md, SECURITY.md, cypress.config.ts, jest.config.ts, jest.setup-zone*.ts, jest.env.ts",
     "tsconfig.json": "tsconfig.*.json"
   },
   "files.exclude": {

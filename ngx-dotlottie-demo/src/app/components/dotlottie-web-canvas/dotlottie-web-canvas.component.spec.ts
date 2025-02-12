@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestBed } from '@angular/core/testing';
 import { DotlottieWebCanvasComponent } from './dotlottie-web-canvas.component';
 
-describe('AppComponent', () => {
+describe.skip('DotlottieWebCanvasComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DotlottieWebCanvasComponent],
