@@ -43,7 +43,7 @@ export default class WASMEnvironment extends TestEnvironment {
   ): Promise<globalThis.Response> {
     const response = await globalThis.fetch(input, {
       ...init,
-      cache: 'default',
+      cache: 'force-cache',
     });
 
     return response;
