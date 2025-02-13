@@ -4,7 +4,7 @@ import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
 getTestBed().resetTestEnvironment();
 
 setupZoneTestEnv({
-  teardown: { destroyAfterEach: true },
+  teardown: { destroyAfterEach: true, rethrowErrors: true },
   errorOnUnknownElements: true,
   errorOnUnknownProperties: true,
 });
