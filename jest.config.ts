@@ -45,7 +45,7 @@ export default {
         collectCoverageFrom: ['**/*.(t|j)s'],
         coverageDirectory: resolve(__dirname, './coverage', name, zoneName!),
         testEnvironment: resolve(__dirname, 'jest.env.ts'),
-        setupFiles: [zone],
+        setupFiles: ['jsdom-worker', zone],
         testPathIgnorePatterns,
         coveragePathIgnorePatterns: [
           '.module.ts',
