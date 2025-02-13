@@ -1,110 +1,38 @@
-import type { NgClass } from '@angular/common';
 import type { DebugElement } from '@angular/core';
-import { Component, input, output } from '@angular/core';
 import type { ComponentFixture } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
-import { expect } from '@jest/globals';
-import type {
-  BaseEvent,
-  Config,
-  DotLottie,
-  RenderConfig,
-} from '@lottiefiles/dotlottie-web';
+import { describe, expect, it } from '@jest/globals';
+import { DotLottie, DotLottieWorker } from '@lottiefiles/dotlottie-web';
 import { resolve } from 'node:path';
-import { URL, pathToFileURL } from 'node:url';
-import type {
-  DotLottieWebComponentInput,
-  DotLottieWebComponentInputType,
-  DotLottieWebComponentOutput,
-} from '../../@types/dotlottie-web';
+import { pathToFileURL } from 'node:url';
+import { provideDotLottieWebSSROptions } from '../../../../../public-api-ssr';
+import { DotLottieWebWorkerComponent } from '../../../../../webworker/src/lib/components/dotlottie-webworker/dotlottie-webworker.component';
+import type { DotLottieWebComponentInputType } from '../../@types/dotlottie-web';
 import { DotLottieWebComponent } from './dotlottie-web.component';
 
-@Component({
-  template: `
-    <dotlottie-web
-      [canvasClass]="canvasClass()"
-      [hostClass]="hostClass()"
-      [autoplay]="autoplay()"
-      [play]="play()"
-      [stop]="stop()"
-      [src]="src()"
-      [freeze]="freeze()"
-      [backgroundColor]="backgroundColor()"
-      [layout]="layout()"
-      [loop]="loop()"
-      [marker]="marker()"
-      [mode]="mode()"
-      [autoResize]="autoResize()"
-      [freezeOnOffscreen]="freezeOnOffscreen()"
-      [devicePixelRatio]="devicePixelRatio()"
-      [segment]="segment()"
-      [speed]="speed()"
-      [themeId]="themeId()"
-      [useFrameInterpolation]="useFrameInterpolation()"
-      (lottieLoad)="onEvent($event)"
-      (lottieLoadError)="onEvent($event)"
-      (lottiePlay)="onEvent($event)"
-      (lottiePause)="onEvent($event)"
-      (lottieStop)="onEvent($event)"
-      (lottieLoop)="onEvent($event)"
-      (lottieComplete)="onEvent($event)"
-      (lottieFrame)="onEvent($event)"
-      (lottieDestroy)="onEvent($event)"
-      (lottieFreeze)="onEvent($event)"
-      (lottieUnfreeze)="onEvent($event)"
-      (lottieRender)="onEvent($event)"
-    ></dotlottie-web>
-  `,
-  standalone: true,
-  imports: [DotLottieWebComponent],
-})
-export class TestComponent implements DotLottieWebComponentInput {
-  canvasClass = input<NgClass['ngClass']>({ 'w-full': true, 'h-full': true });
-  hostClass = input<NgClass['ngClass']>({ 'd-block': true, relative: true });
-  autoplay = input<Config['autoplay']>(true);
-  play = input<boolean>(true);
-  stop = input<boolean>(false);
-  src = input.required<Config['src']>();
-  freeze = input<boolean>(false);
-  backgroundColor = input<Config['backgroundColor']>('#FFFFFF');
-  layout = input<Config['layout']>(undefined);
-  loop = input<Config['loop']>(true);
-  marker = input<Config['marker']>(undefined);
-  mode = input<Config['mode']>(undefined);
-  autoResize = input<RenderConfig['autoResize']>(true);
-  freezeOnOffscreen = input<RenderConfig['freezeOnOffscreen']>(true);
-  devicePixelRatio = input<RenderConfig['devicePixelRatio']>(undefined);
-  segment = input<Config['segment']>(undefined);
-  speed = input<Config['speed']>(undefined);
-  themeId = input<Config['themeId']>(undefined);
-  useFrameInterpolation = input<Config['useFrameInterpolation']>(undefined);
-
-  readonly events$ = output<{
-    name: keyof DotLottieWebComponentOutput;
-    data: unknown;
-  }>();
-
-  onEvent({ type, ...data }: BaseEvent): void {
-    const name = `lottie${type[0].toUpperCase()}${type.substring(1)}`;
-
-    this.events$.emit({
-      name: name as keyof DotLottieWebComponentOutput,
-      data,
-    });
-  }
-}
-
-describe('DotLottieWebComponent', () => {
+describe.each([
+  { component: DotLottieWebComponent, instanceType: DotLottie },
+  { component: DotLottieWebWorkerComponent, instanceType: DotLottieWorker },
+])('$component.name', ({ component: Component }) => {
   const rootDir = resolve(__dirname, '../../../../../../../');
   const fixturesDir = resolve(rootDir, 'ngx-dotlottie-demo/cypress/fixtures');
-  const fixturesDirExternal =
-    'https://github.com/victor-enogwe/ngx-dotlottie-web/tree/main/ngx-dotlottie-demo/cypress/fixtures/';
 
-  function createComponent(
+  function createComponent<T = unknown>(
     options: Partial<DotLottieWebComponentInputType> = {},
-  ): ComponentFixture<DotLottieWebComponent> {
-    const fixture = TestBed.createComponent(DotLottieWebComponent);
+    beforeSetInput?: (
+      fixture: ComponentFixture<DotLottieWebComponent>,
+    ) => Promise<T>,
+  ): {
+    fixture: ComponentFixture<DotLottieWebComponent>;
+    beforeInput: Promise<T | null>;
+  } {
+    const fixture = TestBed.createComponent(Component);
+
     const component = fixture.componentRef;
+
+    const beforeInput = beforeSetInput
+      ? beforeSetInput(fixture)
+      : Promise.resolve(null);
 
     Object.entries(options).forEach(([key, value]) =>
       component.setInput(key, value),
@@ -112,7 +40,7 @@ describe('DotLottieWebComponent', () => {
 
     fixture.detectChanges();
 
-    return fixture;
+    return { fixture, beforeInput };
   }
 
   function getCanvas(element: DebugElement): HTMLCanvasElement | null {
@@ -120,19 +48,21 @@ describe('DotLottieWebComponent', () => {
   }
 
   describe('Client Side Rendering', () => {
-    const src = new URL(
-      'https://lottie.host/0cbdb3ef-2fa5-4d1d-9e4e-f66c879e010d/D0bRr9d93F.lottie',
-      fixturesDirExternal,
-    ).href;
-
     beforeEach(async () => {
-      await TestBed.configureTestingModule({
-        imports: [DotLottieWebComponent],
-      }).compileComponents();
+      await TestBed.resetTestingModule()
+        .configureTestingModule({
+          teardown: { destroyAfterEach: true },
+          imports: [DotLottieWebComponent, DotLottieWebWorkerComponent],
+        })
+        .compileComponents();
     });
 
+    const src = pathToFileURL(resolve(fixturesDir, 'lottie.lottie')).href;
+    const jsonSrc = pathToFileURL(resolve(fixturesDir, 'test.json')).href;
+
     it('should create component with inputs', () => {
-      const { componentInstance } = createComponent({ src });
+      const { fixture } = createComponent({ src });
+      const { componentInstance } = fixture;
 
       const hostClass = expect.objectContaining({
         'd-block': true,
@@ -167,39 +97,138 @@ describe('DotLottieWebComponent', () => {
     });
 
     it('should require the "src" input', () => {
-      const { componentInstance } = createComponent();
+      const { fixture } = createComponent();
+      const { componentInstance } = fixture;
 
       expect(componentInstance).toBeTruthy();
       expect(componentInstance.src).toThrow();
     });
 
-    it.only('should should render a lottie file', async () => {
-      const fixture = createComponent({ src, canvasClass: 'test' });
-      const { componentInstance } = fixture;
+    it('should should render a lottie file', async () => {
+      const { fixture, beforeInput } = createComponent<DotLottie | null>(
+        { src, canvasClass: 'test' },
+        async ({ componentInstance }) => {
+          const lottie = await new Promise<DotLottie | null>((resolve) => {
+            const subscription = componentInstance.lottieInit.subscribe(
+              (lottie) => {
+                if (lottie) resolve(lottie);
+                subscription.unsubscribe();
+              },
+            );
+          });
 
-      await fetch(src).then((response) =>
-        response.arrayBuffer().then(console.log),
+          return lottie;
+        },
       );
 
-      await fixture.whenRenderingDone();
+      const lottie = await beforeInput;
 
-      // const canvas = getCanvas(debugElement);
-
-      const lottie = await new Promise<DotLottie | null>((resolve) => {
-        const subscription = componentInstance.lottieInit.subscribe(
-          (lottie) => {
-            if (lottie) resolve(lottie);
-            subscription.unsubscribe();
-          },
-        );
-      });
+      const { componentInstance, debugElement } = fixture;
+      const canvas = getCanvas(debugElement);
 
       expect(componentInstance).toBeTruthy();
       expect(lottie).toBeDefined();
+      expect(canvas).toBeDefined();
+      expect(canvas?.className).toEqual('test');
+      expect(canvas?.toDataURL()).toBeDefined();
+    });
+
+    it('should should render a lottie JSON file', async () => {
+      const { fixture, beforeInput } = createComponent<DotLottie | null>(
+        { src: jsonSrc, canvasClass: 'test' },
+        async ({ componentInstance }) => {
+          const lottie = await new Promise<DotLottie | null>((resolve) => {
+            const subscription = componentInstance.lottieInit.subscribe(
+              (lottie) => {
+                if (lottie) resolve(lottie);
+                subscription.unsubscribe();
+              },
+            );
+          });
+
+          return lottie;
+        },
+      );
+
+      const lottie = await beforeInput;
+
+      const { componentInstance, debugElement } = fixture;
+      const canvas = getCanvas(debugElement);
+
+      expect(componentInstance).toBeTruthy();
+      expect(lottie).toBeDefined();
+      expect(canvas).toBeDefined();
+      expect(canvas?.className).toEqual('test');
+      expect(canvas?.toDataURL()).toBeDefined();
+    });
+
+    it.skip('should re-render a lottie file on src input change', async () => {
+      const { fixture, beforeInput } = createComponent<DotLottie | null>(
+        { src, canvasClass: 'test' },
+        async ({ componentInstance }) => {
+          const lottie = await new Promise<DotLottie | null>((resolve) => {
+            const subscription = componentInstance.lottieInit.subscribe(
+              (lottie) => {
+                if (lottie) resolve(lottie);
+                subscription.unsubscribe();
+              },
+            );
+          });
+
+          return lottie;
+        },
+      );
+
+      const lottie = await beforeInput;
+
+      const { componentInstance, debugElement } = fixture;
+      const canvas = getCanvas(debugElement);
+
+      expect(componentInstance).toBeTruthy();
+      expect(lottie).toBeDefined();
+      expect(canvas).toBeDefined();
+      expect(canvas?.className).toEqual('test');
+      expect(canvas?.toDataURL()).toBeDefined();
+
+      // const beforeRerender = new Promise<DotLottie | null>((resolve) => {
+      //   const subscription = componentInstance.lottieInit.subscribe(
+      //     (lottie) => {
+      //       if (lottie) resolve(lottie);
+      //       subscription.unsubscribe();
+      //     },
+      //   );
+      // });
+
+      // componentRef.setInput('src', jsonSrc);
+      // const lottieRerender = await beforeRerender;
+
+      // const rerenderedCanvas = getCanvas(debugElement);
+
+      // expect(lottieRerender).toBeDefined();
+      // expect(rerenderedCanvas).toBeDefined();
+      // expect(rerenderedCanvas?.toDataURL()).toBeDefined();
+      // expect(lottie).not.toEqual(lottieRerender);
     });
   });
 
-  describe('Server Side Rendering', () => {
-    const src = pathToFileURL(resolve(fixturesDir, 'lottie.json')).href;
+  describe.skip('Server Side Rendering', () => {
+    beforeEach(async () => {
+      await TestBed.resetTestingModule()
+        .configureTestingModule({
+          teardown: { destroyAfterEach: true },
+          imports: [
+            Component,
+            provideDotLottieWebSSROptions({
+              preloadAnimations: {
+                folder: fixturesDir,
+                animations: ['lottie.json', 'lottie.lottie'],
+              },
+            }),
+          ],
+        })
+        .compileComponents();
+    });
+
+    it('should create component with inputs', () => {});
   });
 });
