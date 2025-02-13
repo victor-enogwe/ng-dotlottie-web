@@ -27,11 +27,11 @@ jobs:
           path: node_modules
           key: dependency-cache-${{ hashFiles('package.json') }}
 
+      - name: Rebuild node-pre-gyp
+        run: pnpm i -g node-gyp@latest
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Rebuild node-pre-gyp
-        run: pnpm rebuild
 
       - name: Check types
         run: pnpm tsc
