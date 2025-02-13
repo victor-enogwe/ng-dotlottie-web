@@ -31,6 +31,7 @@ const testPathIgnorePatterns = [
 ];
 
 export default {
+  collectCoverageFrom: roots.map(({ root }) => `${root}/**/*.ts`),
   testPathIgnorePatterns,
   projects: roots.flatMap(({ root, color }) =>
     zones.map((zone, index) => {
@@ -41,7 +42,7 @@ export default {
         ...tsPreset,
         testMatch: [`${root}/**/*.spec.ts`],
         displayName: { color: color[index], name: `${name}/${zoneName}` },
-        collectCoverageFrom: ['**/*.(t|j)s'],
+        // collectCoverageFrom: ['**/*.(t|j)s'],
         coverageDirectory: resolve(__dirname, './coverage', name, zoneName!),
         testEnvironment: resolve(__dirname, 'jest.env.ts'),
         setupFiles: ['jsdom-worker', zone],
