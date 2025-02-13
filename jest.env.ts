@@ -1,5 +1,4 @@
 import { TestEnvironment } from 'jest-environment-jsdom';
-// console.log(globalThis.Response)
 
 class MockObserver<T> implements IntersectionObserver, ResizeObserver {
   constructor(_callback: T, _options?: IntersectionObserverInit) {}
@@ -11,6 +10,25 @@ class MockObserver<T> implements IntersectionObserver, ResizeObserver {
   unobserve = (...args: unknown[]): unknown => args;
   disconnect = (...args: unknown[]): unknown => args;
   takeRecords = (): IntersectionObserverEntry[] => [];
+}
+
+class MockOffscreenCanvas implements OffscreenCanvas {
+  constructor(
+    readonly width: number,
+    readonly height: number,
+  ) {}
+
+  oncontextlost = (...args: unknown[]): unknown => args;
+  oncontextrestored = (...args: unknown[]): unknown => args;
+  transferToImageBitmap = (): ImageBitmap => new globalThis.ImageBitmap();
+  addEventListener = (...args: unknown[]): unknown => args;
+  removeEventListener = (...args: unknown[]): unknown => args;
+  dispatchEvent = (...args: unknown[]): boolean => !!args;
+  getContext = (..._args: unknown[]): null => null;
+
+  convertToBlob(options?: ImageEncodeOptions): Promise<Blob> {
+    return Promise.resolve(new globalThis.Blob([], options));
+  }
 }
 
 export default class WASMEnvironment extends TestEnvironment {
@@ -57,6 +75,18 @@ export default class WASMEnvironment extends TestEnvironment {
     this.global.SharedArrayBuffer = globalThis.SharedArrayBuffer;
     this.global.Atomics = globalThis.Atomics;
     this.global.WebAssembly = globalThis.WebAssembly;
+
+    this.global.URL.createObjectURL = globalThis.URL.createObjectURL.bind(
+      this.global.URL,
+    );
+
+    this.global.URL.revokeObjectURL = globalThis.URL.revokeObjectURL.bind(
+      this.global.URL,
+    );
+
+    this.global.HTMLCanvasElement.prototype.transferControlToOffscreen =
+      (): MockOffscreenCanvas => new MockOffscreenCanvas(0, 0);
+
     this.global.IntersectionObserver =
       MockObserver<IntersectionObserverCallback>;
     this.global.ResizeObserver = MockObserver<ResizeObserverCallback>;
