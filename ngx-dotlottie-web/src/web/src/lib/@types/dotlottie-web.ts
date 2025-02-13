@@ -5,21 +5,10 @@ import type {
   OutputEmitterRef,
 } from '@angular/core';
 import type {
-  CompleteEvent,
   Config,
-  DestroyEvent,
   DotLottie,
   DotLottieWorker,
-  FrameEvent,
-  FreezeEvent,
-  LoadEvent,
-  LoopEvent,
-  PauseEvent,
-  PlayEvent,
   RenderConfig,
-  RenderEvent,
-  StopEvent,
-  UnfreezeEvent,
 } from '@lottiefiles/dotlottie-web';
 
 export type AnimationFilename = string;
@@ -112,16 +101,5 @@ export interface DotLottieWebworkerComponentInput
 }
 
 export interface DotLottieWebComponentOutput {
-  readonly lottieInit: OutputEmitterRef<DotLottie | DotLottieWorker | null>;
-  readonly lottieLoad: OutputEmitterRef<LoadEvent>;
-  readonly lottiePlay: OutputEmitterRef<PlayEvent>;
-  readonly lottiePause: OutputEmitterRef<PauseEvent>;
-  readonly lottieStop: OutputEmitterRef<StopEvent>;
-  readonly lottieLoop: OutputEmitterRef<LoopEvent>;
-  readonly lottieComplete: OutputEmitterRef<CompleteEvent>;
-  readonly lottieFrame: OutputEmitterRef<FrameEvent>;
-  readonly lottieDestroy: OutputEmitterRef<DestroyEvent>;
-  readonly lottieFreeze: OutputEmitterRef<FreezeEvent>;
-  readonly lottieUnfreeze: OutputEmitterRef<UnfreezeEvent>;
-  readonly lottieRender: OutputEmitterRef<RenderEvent>;
+  readonly lottieInit: OutputEmitterRef<DotLottie | DotLottieWorker>;
 }
