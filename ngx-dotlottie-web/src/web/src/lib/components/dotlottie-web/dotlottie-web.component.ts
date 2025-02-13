@@ -23,7 +23,6 @@ import type {
   DestroyEvent,
   FrameEvent,
   FreezeEvent,
-  LoadErrorEvent,
   LoadEvent,
   LoopEvent,
   PauseEvent,
@@ -212,7 +211,6 @@ export class DotLottieWebComponent
 
   readonly lottieInit = output<DotLottie | null>();
   readonly lottieLoad = output<LoadEvent>();
-  readonly lottieLoadError = output<LoadErrorEvent>();
   readonly lottiePlay = output<PlayEvent>();
   readonly lottiePause = output<PauseEvent>();
   readonly lottieStop = output<StopEvent>();
@@ -262,10 +260,6 @@ export class DotLottieWebComponent
 
     dotlottie.addEventListener('complete', (event) =>
       this.lottieComplete.emit(event),
-    );
-
-    dotlottie.addEventListener('loadError', (event) =>
-      this.lottieLoadError.emit(event),
     );
 
     dotlottie.addEventListener('freeze', (event) =>
