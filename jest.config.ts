@@ -39,7 +39,6 @@ export default {
 
       return {
         ...tsPreset,
-        detectOpenHandles: true,
         testMatch: [`${root}/**/*.spec.ts`],
         displayName: { color: color[index], name: `${name}/${zoneName}` },
         collectCoverageFrom: ['**/*.(t|j)s'],
