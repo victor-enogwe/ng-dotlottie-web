@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20.18.1
+          node-version: 20.x
 
       - name: Pnpm setup
         uses: pnpm/action-setup@v4
@@ -26,6 +26,9 @@ jobs:
         with:
           path: node_modules
           key: dependency-cache-${{ hashFiles('package.json') }}
+
+      - name: Install Canvas
+        run: pnpm i -g canvas
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
