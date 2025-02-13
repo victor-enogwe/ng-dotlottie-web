@@ -17,21 +17,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
-import type {
-  CompleteEvent,
-  Config,
-  DestroyEvent,
-  FrameEvent,
-  FreezeEvent,
-  LoadEvent,
-  LoopEvent,
-  PauseEvent,
-  PlayEvent,
-  RenderConfig,
-  RenderEvent,
-  StopEvent,
-  UnfreezeEvent,
-} from '@lottiefiles/dotlottie-web';
+import type { Config, RenderConfig } from '@lottiefiles/dotlottie-web';
 import { DotLottie } from '@lottiefiles/dotlottie-web';
 import {
   EMPTY,
@@ -209,18 +195,7 @@ export class DotLottieWebComponent
     Config['useFrameInterpolation']
   >(undefined, { transform: this.transform('useFrameInterpolation') });
 
-  readonly lottieInit = output<DotLottie | null>();
-  readonly lottieLoad = output<LoadEvent>();
-  readonly lottiePlay = output<PlayEvent>();
-  readonly lottiePause = output<PauseEvent>();
-  readonly lottieStop = output<StopEvent>();
-  readonly lottieLoop = output<LoopEvent>();
-  readonly lottieComplete = output<CompleteEvent>();
-  readonly lottieFrame = output<FrameEvent>();
-  readonly lottieDestroy = output<DestroyEvent>();
-  readonly lottieFreeze = output<FreezeEvent>();
-  readonly lottieUnfreeze = output<UnfreezeEvent>();
-  readonly lottieRender = output<RenderEvent>();
+  readonly lottieInit = output<DotLottie>();
 
   private src$ = toObservable(this.src).pipe(
     takeUntilDestroyed(),
@@ -235,50 +210,6 @@ export class DotLottieWebComponent
     afterNextRender(() => this.src$.subscribe());
 
     this.destroyRef.onDestroy(() => this.dotlottie()?.destroy());
-  }
-
-  private addListeners(dotlottie: DotLottie): void {
-    dotlottie.addEventListener('load', (event) => {
-      this.lottieLoad.emit(event);
-      this.viewChildReady$.next(true);
-      this.dotlottie.set(dotlottie);
-    });
-
-    dotlottie.addEventListener('play', (event) => this.lottiePlay.emit(event));
-
-    dotlottie.addEventListener('pause', (event) =>
-      this.lottiePause.emit(event),
-    );
-
-    dotlottie.addEventListener('stop', (event) => this.lottieStop.emit(event));
-
-    dotlottie.addEventListener('loop', (event) => this.lottieLoop.emit(event));
-
-    dotlottie.addEventListener('frame', (event) =>
-      this.lottieFrame.emit(event),
-    );
-
-    dotlottie.addEventListener('complete', (event) =>
-      this.lottieComplete.emit(event),
-    );
-
-    dotlottie.addEventListener('freeze', (event) =>
-      this.lottieFreeze.emit(event),
-    );
-
-    dotlottie.addEventListener('unfreeze', (event) =>
-      this.lottieUnfreeze.emit(event),
-    );
-
-    dotlottie.addEventListener('render', (event) =>
-      this.lottieRender.emit(event),
-    );
-
-    dotlottie.addEventListener('destroy', (event) => {
-      this.lottieDestroy.emit(event);
-      this.viewChildReady$.next(false);
-      this.dotlottie.set(null);
-    });
   }
 
   protected loadConfig(): Omit<Config, 'canvas' | 'data' | 'src'> {
@@ -325,7 +256,16 @@ export class DotLottieWebComponent
       canvas: this.canvas().nativeElement,
     });
 
-    this.addListeners(dotlottie);
+    dotlottie.addEventListener('load', () => {
+      this.dotlottie.set(dotlottie);
+      this.viewChildReady$.next(true);
+    });
+
+    dotlottie.addEventListener('destroy', () => {
+      this.viewChildReady$.next(false);
+      this.dotlottie.set(null);
+    });
+
     this.lottieInit.emit(dotlottie);
   }
 
