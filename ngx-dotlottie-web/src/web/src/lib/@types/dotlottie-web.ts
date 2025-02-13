@@ -8,9 +8,10 @@ import type {
   CompleteEvent,
   Config,
   DestroyEvent,
+  DotLottie,
+  DotLottieWorker,
   FrameEvent,
   FreezeEvent,
-  LoadErrorEvent,
   LoadEvent,
   LoopEvent,
   PauseEvent,
@@ -19,8 +20,6 @@ import type {
   RenderEvent,
   StopEvent,
   UnfreezeEvent,
-  DotLottie,
-  DotLottieWorker,
 } from '@lottiefiles/dotlottie-web';
 
 export type AnimationFilename = string;
@@ -115,7 +114,6 @@ export interface DotLottieWebworkerComponentInput
 export interface DotLottieWebComponentOutput {
   readonly lottieInit: OutputEmitterRef<DotLottie | DotLottieWorker | null>;
   readonly lottieLoad: OutputEmitterRef<LoadEvent>;
-  readonly lottieLoadError: OutputEmitterRef<LoadErrorEvent>;
   readonly lottiePlay: OutputEmitterRef<PlayEvent>;
   readonly lottiePause: OutputEmitterRef<PauseEvent>;
   readonly lottieStop: OutputEmitterRef<StopEvent>;
