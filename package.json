@@ -79,7 +79,7 @@
     "@types/jest": "29.5.14",
     "@types/node": "22.13.1",
     "@typescript-eslint/eslint-plugin": "8.23.0",
-    "canvas": "2.11.1",
+    "canvas": "3.1.0",
     "cypress": "14.0.2",
     "depcheck": "1.4.7",
     "eslint": "9.20.0",
@@ -135,9 +135,11 @@
       "@commitlint/cli",
       "@commitlint/config-conventional",
       "@cypress/schematic",
+      "@lottiefiles/dotlottie-web",
       "@types/node",
-      "semantic-release",
+      "jsdom-worker",
       "ng-packagr",
+      "semantic-release",
       "tslib"
     ],
     "ignorePatterns": [
@@ -159,6 +161,7 @@
   "pnpm": {
     "overrides": {
       "@typescript-eslint/utils": "8.23.0",
+      "canvas": "3.1.0",
       "esbuild": "0.25.0",
       "glob": "11.0.1",
       "rimraf": "6.0.1"

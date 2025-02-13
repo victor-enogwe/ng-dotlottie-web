@@ -27,9 +27,6 @@ jobs:
           path: node_modules
           key: dependency-cache-${{ hashFiles('package.json') }}
 
-      - name: Install Canvas
-        run: pnpm i -g canvas
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
