@@ -3,8 +3,6 @@ import type { ComponentFixture } from '@angular/core/testing';
 import { TestBed } from '@angular/core/testing';
 import { describe, expect, it } from '@jest/globals';
 import { DotLottie, DotLottieWorker } from '@lottiefiles/dotlottie-web';
-import { resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
 import { setWasmURL } from '../../../../../ssr/src/lib/utils/set-wasm/set-wasm';
 import { DotLottieWebWorkerComponent } from '../../../../../webworker/src/lib/components/dotlottie-webworker/dotlottie-webworker.component';
 import type { DotLottieWebComponentInputType } from '../../@types/dotlottie-web';
@@ -15,9 +13,6 @@ describe.each([
   { component: DotLottieWebWorkerComponent, instanceType: DotLottieWorker },
 ])('$component.name', ({ component: Component }) => {
   beforeAll(async () => setWasmURL());
-
-  const rootDir = resolve(__dirname, '../../../../../../../');
-  const fixturesDir = resolve(rootDir, 'ngx-dotlottie-demo/cypress/fixtures');
 
   function createComponent(): ComponentFixture<DotLottieWebComponent> {
     return TestBed.createComponent(Component);
@@ -50,8 +45,11 @@ describe.each([
 
     afterEach(() => TestBed.resetTestingModule());
 
-    const src = pathToFileURL(resolve(fixturesDir, 'lottie.lottie')).href;
-    const jsonSrc = pathToFileURL(resolve(fixturesDir, 'lottie.json')).href;
+    const src =
+      'https://lottie.host/0cbdb3ef-2fa5-4d1d-9e4e-f66c879e010d/D0bRr9d93F.lottie';
+
+    const jsonSrc =
+      'https://lottie.host/647eb023-6040-4b60-a275-e2546994dd7f/zDCfp5lhLe.json';
 
     it('should create component with inputs', () => {
       const fixture = createComponent();
