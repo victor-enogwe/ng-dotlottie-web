@@ -30,5 +30,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Rebuild node-pre-gyp
+        run: pnpm rebuild
+
+      - name: Check types
+        run: pnpm tsc
+
+      - name: Lint project
+        run: pnpm lint
+
+      - name: Format project
+        run: pnpm format
+
       - name: Build packages
         run: pnpm build
