@@ -11,9 +11,7 @@
     "directory": "ngx-dotlottie-web"
   },
   "bugs": "git+https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
-  "contributors": [
-    "Victor Enogwe <victor.enogwe@gmail.com>"
-  ],
+  "contributors": ["Victor Enogwe <victor.enogwe@gmail.com>"],
   "scripts": {
     "build": "tsc -p tsconfig.schematics.json",
     "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../dist/ngx-dotlottie-web/"
