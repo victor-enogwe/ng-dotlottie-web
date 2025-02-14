@@ -1,4 +1,4 @@
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgClass } from '@angular/common';
 import type { ElementRef } from '@angular/core';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
@@ -6,8 +6,6 @@ import {
   Component,
   DestroyRef,
   HostListener,
-  TemplateRef,
-  ViewContainerRef,
   ViewEncapsulation,
   afterNextRender,
   inject,
@@ -20,13 +18,12 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import type { Config, RenderConfig } from '@lottiefiles/dotlottie-web';
 import { DotLottie } from '@lottiefiles/dotlottie-web';
 import {
+  BehaviorSubject,
   EMPTY,
   ReplaySubject,
-  Subject,
   distinctUntilChanged,
   filter,
   iif,
-  startWith,
   switchMap,
   tap,
 } from 'rxjs';
@@ -36,31 +33,25 @@ import type {
   DotLottieWebComponentInputType,
   DotLottieWebComponentOutput,
 } from '../../@types/dotlottie-web';
+import { getSrcLength } from '../../utils/get-src-length/get-src-length';
+import { isTwoEqualArrayBuffers } from '../../utils/is-two-equal-array-buffers/is-two-equal-array-buffers';
 import { isTwoEqualObjects } from '../../utils/is-two-equal-objects/is-two-equal-objects';
+import { isURLOrPath } from '../../utils/is-url-or-path/is-url-or-path';
 
 @Component({
   selector: 'dotlottie-web',
   template: `
-    <div>
-      <ng-container
-        #outlet
-        [ngTemplateOutlet]="content"
-      ></ng-container>
-    </div>
-
-    <ng-template #content>
-      <canvas
-        [ngClass]="canvasClass()"
-        #canvas
-        part="part dotlottie-web"
-      ></canvas>
-    </ng-template>
+    <canvas
+      [ngClass]="canvasClass()"
+      #canvas
+      part="part dotlottie-web"
+    ></canvas>
   `,
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [NgClass, NgTemplateOutlet],
+  imports: [NgClass],
   styles: `
     .w-full {
       width: 100%;
@@ -78,22 +69,11 @@ import { isTwoEqualObjects } from '../../utils/is-two-equal-objects/is-two-equal
       position: relative;
     }
   `,
-  host: { '[class]': 'hostClass()' },
 })
 export class DotLottieWebComponent
   implements DotLottieWebComponentInput, DotLottieWebComponentOutput
 {
   protected Lottie = DotLottie;
-
-  private readonly outletRef = viewChild.required<unknown, ViewContainerRef>(
-    'outlet',
-    { read: ViewContainerRef },
-  );
-
-  private readonly contentRef = viewChild.required<
-    unknown,
-    TemplateRef<unknown>
-  >('content', { read: TemplateRef });
 
   private readonly canvas =
     viewChild.required<ElementRef<HTMLCanvasElement>>('canvas');
@@ -109,10 +89,9 @@ export class DotLottieWebComponent
     value: unknown;
   }>();
 
-  private readonly viewChildReady$ = new Subject<boolean>();
+  private readonly viewChildReady$ = new BehaviorSubject<boolean>(false);
 
   private readonly processEvents$ = this.viewChildReady$.pipe(
-    startWith(false),
     takeUntilDestroyed(),
     switchMap((ready) =>
       iif(
@@ -128,15 +107,13 @@ export class DotLottieWebComponent
 
   canvasClass = input<NgClass['ngClass']>({ 'w-full': true, 'h-full': true });
 
-  hostClass = input<NgClass['ngClass']>({ 'd-block': true, relative: true });
-
   autoplay = input<Config['autoplay']>(true);
 
   play = input<boolean, boolean>(true, { transform: this.transform('play') });
 
   stop = input<boolean, boolean>(false, { transform: this.transform('stop') });
 
-  src = input.required<Config['src']>();
+  src = input.required<Config['src'] | Config['data']>();
 
   freeze = input<boolean, boolean>(false, {
     transform: this.transform('freeze'),
@@ -190,6 +167,10 @@ export class DotLottieWebComponent
     transform: this.transform('themeId'),
   });
 
+  animationId = input<Config['themeId'], Config['themeId']>(undefined, {
+    transform: this.transform('animationId'),
+  });
+
   useFrameInterpolation = input<
     Config['useFrameInterpolation'],
     Config['useFrameInterpolation']
@@ -199,8 +180,8 @@ export class DotLottieWebComponent
 
   private src$ = toObservable(this.src).pipe(
     takeUntilDestroyed(),
-    filter((src = '') => src.length > 0),
-    distinctUntilChanged(),
+    filter((src = '') => getSrcLength(src) > 0),
+    distinctUntilChanged((a, b) => this.compareSrc(a, b)),
     tap((src) => this.setSrc(src)),
   );
 
@@ -212,7 +193,7 @@ export class DotLottieWebComponent
     this.destroyRef.onDestroy(() => this.dotlottie()?.destroy());
   }
 
-  protected loadConfig(): Omit<Config, 'canvas' | 'data' | 'src'> {
+  protected getConfig(): Omit<Config, 'canvas' | 'data' | 'src'> {
     return {
       autoplay: this.autoplay(),
       loop: this.loop(),
@@ -232,12 +213,37 @@ export class DotLottieWebComponent
     };
   }
 
-  private setSrc(value: Config['src']): void {
-    this.dotlottie()?.destroy();
+  // eslint-disable-next-line complexity
+  private compareSrc(a: Config['data'], b: Config['data']): boolean {
+    switch (true) {
+      case a instanceof ArrayBuffer && b instanceof ArrayBuffer:
+        return isTwoEqualArrayBuffers(a, b);
+      case typeof a === 'string' && typeof b === 'string':
+      case a instanceof String && b instanceof String:
+        return a.localeCompare(b as string) === 0;
+      case Array.isArray(a) && Array.isArray(b):
+      case typeof a === 'object' && typeof b === 'object':
+        return isTwoEqualObjects(
+          a as Record<string, unknown>,
+          b as Record<string, unknown>,
+        );
+      default:
+        return false;
+    }
+  }
 
-    const data = value ? this.transferState.get(value) : undefined;
+  private setSrc(value: Config['data']): void {
+    this.viewChildReady$.next(false);
 
-    const config = this.loadConfig();
+    const isURL = isURLOrPath(value);
+
+    const data = isURL
+      ? value
+        ? this.transferState.get(value as string)
+        : undefined
+      : value;
+
+    const config = this.getConfig();
 
     if (data) {
       Object.assign(config, { data });
@@ -245,11 +251,11 @@ export class DotLottieWebComponent
       Object.assign(config, { src: value });
     }
 
-    const outletRef = this.outletRef();
-    const contentRef = this.contentRef();
+    const dotLottie = this.dotlottie();
 
-    outletRef.clear();
-    outletRef.createEmbeddedView(contentRef);
+    if (dotLottie) {
+      return dotLottie.load(config);
+    }
 
     const dotlottie = new this.Lottie({
       ...config,
@@ -257,16 +263,16 @@ export class DotLottieWebComponent
     });
 
     dotlottie.addEventListener('load', () => {
-      this.dotlottie.set(dotlottie);
       this.viewChildReady$.next(true);
     });
 
     dotlottie.addEventListener('destroy', () => {
       this.viewChildReady$.next(false);
-      this.dotlottie.set(null);
     });
 
-    this.lottieInit.emit(dotlottie);
+    this.dotlottie.set(dotlottie);
+
+    return this.lottieInit.emit(dotlottie);
   }
 
   private setBackgroundColor(value: Config['backgroundColor']): void {
@@ -295,6 +301,10 @@ export class DotLottieWebComponent
 
   private setThemeId(value: Config['themeId']): void {
     this.dotlottie()?.setTheme(value!);
+  }
+
+  private setAnimationId(value: Config['themeId']): void {
+    this.dotlottie()?.loadAnimation(value!);
   }
 
   private setAutoResize(value: RenderConfig['autoResize'] = false): void {
@@ -389,6 +399,8 @@ export class DotLottieWebComponent
         return this.setSpeed(value as Config['speed']);
       case 'themeId':
         return this.setThemeId(value as Config['themeId']);
+      case 'animationId':
+        return this.setAnimationId(value as Config['themeId']);
       case 'stop':
         return this.setStop(value as boolean);
       case 'autoResize':
