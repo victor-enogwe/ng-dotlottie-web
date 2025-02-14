@@ -151,7 +151,7 @@ export class AnimationComponent {
 }
 ```
 
-[dotLottie](../web/README.md#apis) instance exposes multiple events that can be listened to. You can find the list of events [here](../web/README.md#events).
+[dotLottie](https://github.com/LottieFiles/dotlottie-web/tree/main/packages/webweb/README.md#apis) instance exposes multiple events that can be listened to. You can find the list of events [here](https://github.com/LottieFiles/dotlottie-web/tree/main/packages/webweb/README.md#events).
 
 ### Development
 
