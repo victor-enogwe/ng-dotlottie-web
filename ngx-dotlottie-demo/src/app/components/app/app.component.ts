@@ -5,6 +5,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import type { Config } from '@lottiefiles/dotlottie-web';
 import { DotlottieWebCanvasComponent } from '../dotlottie-web-canvas/dotlottie-web-canvas.component';
 
 @Component({
@@ -19,10 +20,10 @@ import { DotlottieWebCanvasComponent } from '../dotlottie-web-canvas/dotlottie-w
 export class AppComponent {
   title = 'ngx-dotlottie-demo';
 
-  dotlottieWebURL = model(
+  dotlottieWebURL = model<Config['data']>(
     'https://lottie.host/0cbdb3ef-2fa5-4d1d-9e4e-f66c879e010d/D0bRr9d93F.lottie',
   );
-  dotlottieWebworkerURL = model(
+  dotlottieWebworkerURL = model<Config['data']>(
     'https://lottie.host/15e35e6f-3291-448d-b0f2-263292034c73/cWqhH58Trk.lottie',
   );
 }
