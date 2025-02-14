@@ -213,14 +213,12 @@ export class DotLottieWebComponent
     };
   }
 
-  // eslint-disable-next-line complexity
   private compareSrc(a: Config['data'], b: Config['data']): boolean {
     switch (true) {
       case a instanceof ArrayBuffer && b instanceof ArrayBuffer:
         return isTwoEqualArrayBuffers(a, b);
       case typeof a === 'string' && typeof b === 'string':
-      case a instanceof String && b instanceof String:
-        return a.localeCompare(b as string) === 0;
+        return a.localeCompare(b) === 0;
       case Array.isArray(a) && Array.isArray(b):
       case typeof a === 'object' && typeof b === 'object':
         return isTwoEqualObjects(
