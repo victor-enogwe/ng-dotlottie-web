@@ -5,13 +5,12 @@ import type { AnimationFilename } from '../../@types/dotlottie-common';
 @Injectable({ providedIn: 'root' })
 export class DotLottieWebTransferStateService {
   private readonly transferState = inject(TransferState);
-  private readonly ZIP_SIGNATURE = new Uint8Array([0x50, 0x4b, 0x03, 0x04]);
 
   private bufferFrom(data: number[]): ArrayBuffer {
     const buffer = new ArrayBuffer(data.length);
-    const view = new Uint8Array(buffer.slice(0, this.ZIP_SIGNATURE.byteLength));
+    const view = new DataView(buffer);
 
-    data.forEach((byte, index) => view.set([byte], index));
+    data.forEach((byte, index) => view.setUint8(index, byte));
 
     return buffer;
   }
