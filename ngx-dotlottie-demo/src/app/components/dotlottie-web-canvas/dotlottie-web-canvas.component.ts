@@ -11,10 +11,11 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
+import type { Config } from '@lottiefiles/dotlottie-web';
+import type { DotLottieWebComponentInputType } from '../../../../../ngx-dotlottie-web/src/web/src/lib/@types/dotlottie-web';
 import { DotLottieWebComponent } from '../../../../../ngx-dotlottie-web/src/web/src/lib/components/dotlottie-web/dotlottie-web.component';
 import { DotLottieWebWorkerComponent } from '../../../../../ngx-dotlottie-web/src/webworker/src/lib/components/dotlottie-webworker/dotlottie-webworker.component';
 import { DotlottieWebControlsComponent } from '../dotlottie-web-controls/dotlottie-web-controls.component';
-import type { DotLottieWebComponentInputType } from '../../../../../ngx-dotlottie-web/src/web/src/lib/@types/dotlottie-web';
 
 @Component({
   selector: 'dotlottie-web-canvas',
@@ -40,7 +41,7 @@ import type { DotLottieWebComponentInputType } from '../../../../../ngx-dotlotti
 export class DotlottieWebCanvasComponent {
   title = input<string>();
 
-  dotlottieURL = model.required<string>();
+  dotlottieURL = model.required<Config['data']>();
 
   showDivider = input(false);
 
