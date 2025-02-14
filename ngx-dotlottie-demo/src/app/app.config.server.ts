@@ -14,7 +14,14 @@ const serverConfig: ApplicationConfig = {
     provideDotLottieWebSSROptions({
       preloadAnimations: {
         folder: resolve('ngx-dotlottie-demo', 'cypress', 'fixtures'),
-        animations: ['example.json', 'lottie.json', 'test.json', 'test.lottie'],
+        animations: [
+          'example.json',
+          'lottie.json',
+          'test.json',
+          'test.lottie',
+          'dragon.json',
+          'markers.json',
+        ],
       },
     }),
   ],
