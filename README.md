@@ -31,10 +31,11 @@ dotLottie is an open-source file format that aggregates one or more Lottie files
 
 ## Installation
 
+This package relies on the `@lottiefiles/dotlottie-web` package.
 You can install this package using npm:
 
 ```bash
-npm install ngx-dotlottie-web
+npm install @lottiefiles/dotlottie-web ngx-dotlottie-web
 ```
 
 ## Basic Usage
