@@ -94,7 +94,7 @@ The `DotLottieWebComponent` accepts the following props with their detailed prim
 | autoResize            | boolean                | Enables automatic resizing of the animation canvas.               |
 | freezeOnOffscreen     | boolean                | Freezes the animation when it goes offscreen.                       |
 | devicePixelRatio      | number                 | Adjusts rendering based on the device’s pixel ratio.                |
-| segment               | [number, number]       | Specifies starting and ending frames for segmented playback.        |
+| segment               | Array<number, number>       | Specifies starting and ending frames for segmented playback.        |
 | speed                 | number                 | Sets the playback speed of the animation.                           |
 | themeId               | string                 | Identifies the theme to be applied.                                |
 | animationId           | string                 | Optional identifier for the animation instance.                     |
