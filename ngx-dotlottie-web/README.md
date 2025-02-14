@@ -1,6 +1,6 @@
 # ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white) Ngx-dotlottie-web
 
-[![codecov](https://codecov.io/github/victor-enogwe/ngx-dotlottie-web/branch/main/graph/badge.svg?token=LX4V96S5AE)](https://codecov.io/github/victor-enogwe/ngx-dotlottie-web) ![GitHub](https://img.shields.io/github/license/victor-enogwe/ngx-dotlottie-web)
+![GitHub](https://img.shields.io/github/license/victor-enogwe/ngx-dotlottie-web) [![codecov](https://codecov.io/github/victor-enogwe/ngx-dotlottie-web/branch/main/graph/badge.svg?token=LX4V96S5AE)](https://codecov.io/github/victor-enogwe/ngx-dotlottie-web) ![build](https://github.com/github/docs/actions/workflows/ci.yml/badge.svg?branch=main) ![tests](https://github.com/github/docs/actions/workflows/coverage.yml/badge.svg?branch=main)
 
 ## Contents
 
