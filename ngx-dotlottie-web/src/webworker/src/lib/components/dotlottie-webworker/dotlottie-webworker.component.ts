@@ -1,4 +1,4 @@
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
@@ -15,26 +15,17 @@ import type { DotLottieWorkerId } from '../../@types/dotlottie-webworker';
 @Component({
   selector: 'dotlottie-webworker',
   template: `
-    <div>
-      <ng-container
-        #outlet
-        [ngTemplateOutlet]="content"
-      ></ng-container>
-    </div>
-
-    <ng-template #content>
-      <canvas
-        [ngClass]="canvasClass()"
-        #canvas
-        part="part dotlottie-webworker"
-      ></canvas>
-    </ng-template>
+    <canvas
+      [ngClass]="canvasClass()"
+      #canvas
+      part="part dotlottie-web"
+    ></canvas>
   `,
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [NgClass, NgTemplateOutlet],
+  imports: [NgClass],
   styles: `
     .w-full {
       width: 100%;
@@ -52,7 +43,6 @@ import type { DotLottieWorkerId } from '../../@types/dotlottie-webworker';
       position: relative;
     }
   `,
-  host: { '[class]': 'hostClass()' },
 })
 export class DotLottieWebWorkerComponent
   extends DotLottieWebComponent
@@ -62,11 +52,11 @@ export class DotLottieWebWorkerComponent
 
   workerId = input<string>('ngx-dotlottie-webworker');
 
-  protected override loadConfig(): Omit<Config, 'canvas' | 'data' | 'src'> & {
+  protected override getConfig(): Omit<Config, 'canvas' | 'data' | 'src'> & {
     workerId?: DotLottieWorkerId;
   } {
     return {
-      ...super.loadConfig(),
+      ...super.getConfig(),
       workerId: this.workerId(),
     };
   }
