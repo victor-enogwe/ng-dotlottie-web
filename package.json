@@ -163,6 +163,7 @@
       "@typescript-eslint/utils": "8.23.0",
       "@octokit/plugin-paginate-rest": "11.4.2",
       "@octokit/request": "9.2.1",
+      "@octokit/request-error": "6.1.7",
       "canvas": "3.1.0",
       "esbuild": "0.25.0",
       "rimraf": "6.0.1"
