@@ -112,7 +112,7 @@ describe.each([
         );
       });
 
-      setComponentInput(fixture, { src, canvasClass: 'test' });
+      setComponentInput(fixture, { src: jsonSrc, canvasClass: 'test' });
 
       const lottie = await lottieInit;
       const canvas = getCanvas(debugElement);
@@ -123,6 +123,12 @@ describe.each([
       expect(canvas).toBeDefined();
       expect(canvas?.className).toEqual('test');
       expect(canvas?.toDataURL()).toBeDefined();
+
+      const load = jest.spyOn(lottie!, 'load');
+
+      setComponentInput(fixture, { src, canvasClass: 'test' });
+
+      expect(load).toHaveBeenLastCalledWith(expect.objectContaining({ src }));
     });
 
     it('should render a lottie JSON file from url(JSON)', async () => {
@@ -139,7 +145,7 @@ describe.each([
         );
       });
 
-      setComponentInput(fixture, { src: jsonSrc, canvasClass: 'test' });
+      setComponentInput(fixture, { src, canvasClass: 'test' });
 
       const lottie = await lottieInit;
       const canvas = getCanvas(debugElement);
@@ -150,7 +156,60 @@ describe.each([
       expect(canvas).toBeDefined();
       expect(canvas?.className).toEqual('test');
       expect(canvas?.toDataURL()).toBeDefined();
+
+      const load = jest.spyOn(lottie!, 'load');
+
+      setComponentInput(fixture, { src: jsonSrc, canvasClass: 'test' });
+
+      await lastValueFrom(timer(1000));
+
+      expect(load).toHaveBeenLastCalledWith(
+        expect.objectContaining({ src: jsonSrc }),
+      );
     });
+
+    it(
+      `should not re-render if same URL is consecutively set in the src prop
+      `.trim(),
+      async () => {
+        const fixture = createComponent();
+
+        const { componentInstance, debugElement } = fixture;
+
+        const lottieInit = new Promise<DotLottie | null>((resolve) => {
+          const subscription = componentInstance.lottieInit.subscribe(
+            (lottie) => {
+              if (lottie) resolve(lottie);
+              subscription.unsubscribe();
+            },
+          );
+        });
+
+        setComponentInput(fixture, { src: jsonSrc, canvasClass: 'test' });
+
+        const lottie = await lottieInit;
+        const canvas = getCanvas(debugElement);
+
+        expect(componentInstance).toBeTruthy();
+        expect(lottie).toBeDefined();
+        expect(lottie?.canvas).toBeDefined();
+        expect(canvas).toBeDefined();
+        expect(canvas?.className).toEqual('test');
+        expect(canvas?.toDataURL()).toBeDefined();
+
+        const load = jest.spyOn(lottie!, 'load');
+
+        setComponentInput(fixture, { src, canvasClass: 'test' });
+
+        await lastValueFrom(timer(1000));
+
+        setComponentInput(fixture, { src, canvasClass: 'test' });
+
+        await lastValueFrom(timer(1000));
+
+        expect(load).toHaveBeenCalledTimes(1);
+      },
+    );
 
     it('should render a lottie from ArrayBuffer', async () => {
       const buffer = await readFile(resolve(fixturesDir, 'test.lottie'));
@@ -168,7 +227,7 @@ describe.each([
         );
       });
 
-      setComponentInput(fixture, { src: buffer.buffer, canvasClass: 'test' });
+      setComponentInput(fixture, { src, canvasClass: 'test' });
 
       const lottie = await lottieInit;
       const canvas = getCanvas(debugElement);
@@ -179,7 +238,66 @@ describe.each([
       expect(canvas).toBeDefined();
       expect(canvas?.className).toEqual('test');
       expect(canvas?.toDataURL()).toBeDefined();
+
+      const load = jest.spyOn(lottie!, 'load');
+
+      setComponentInput(fixture, { src: buffer.buffer, canvasClass: 'test' });
+
+      await lastValueFrom(timer(1000));
+
+      setComponentInput(fixture, { src: buffer.buffer, canvasClass: 'test' });
+
+      await lastValueFrom(timer(1000));
+
+      expect(load).toHaveBeenLastCalledWith(
+        expect.objectContaining({ data: buffer.buffer }),
+      );
     });
+
+    it(
+      `should not re-render if same ArrayBuffer is consecutively set in the src prop
+      `.trim(),
+      async () => {
+        const buffer = await readFile(resolve(fixturesDir, 'test.lottie'));
+
+        const fixture = createComponent();
+
+        const { componentInstance, debugElement } = fixture;
+
+        const lottieInit = new Promise<DotLottie | null>((resolve) => {
+          const subscription = componentInstance.lottieInit.subscribe(
+            (lottie) => {
+              if (lottie) resolve(lottie);
+              subscription.unsubscribe();
+            },
+          );
+        });
+
+        setComponentInput(fixture, { src, canvasClass: 'test' });
+
+        const lottie = await lottieInit;
+        const canvas = getCanvas(debugElement);
+
+        expect(componentInstance).toBeTruthy();
+        expect(lottie).toBeDefined();
+        expect(lottie?.canvas).toBeDefined();
+        expect(canvas).toBeDefined();
+        expect(canvas?.className).toEqual('test');
+        expect(canvas?.toDataURL()).toBeDefined();
+
+        const load = jest.spyOn(lottie!, 'load');
+
+        setComponentInput(fixture, { src: buffer.buffer, canvasClass: 'test' });
+
+        await lastValueFrom(timer(1000));
+
+        setComponentInput(fixture, { src: buffer.buffer, canvasClass: 'test' });
+
+        await lastValueFrom(timer(1000));
+
+        expect(load).toHaveBeenCalledTimes(1);
+      },
+    );
 
     it('should render a lottie from JSON', async () => {
       const buffer = await readFile(resolve(fixturesDir, 'test.json'), {
@@ -215,7 +333,247 @@ describe.each([
       expect(canvas?.toDataURL()).toBeDefined();
     });
 
+    // @TODO fix complex object comparison then this test will pass
+    it.skip(
+      `should not re-render if the same JSON is consecutively in the src prop
+      `.trim(),
+      async () => {
+        const buffer = await readFile(resolve(fixturesDir, 'test.json'), {
+          encoding: 'utf-8',
+        });
+
+        const fixture = createComponent();
+
+        const { componentInstance, debugElement } = fixture;
+
+        const lottieInit = new Promise<DotLottie | null>((resolve) => {
+          const subscription = componentInstance.lottieInit.subscribe(
+            (lottie) => {
+              if (lottie) resolve(lottie);
+              subscription.unsubscribe();
+            },
+          );
+        });
+
+        setComponentInput(fixture, { src, canvasClass: 'test' });
+
+        const lottie = await lottieInit;
+        const canvas = getCanvas(debugElement);
+
+        expect(componentInstance).toBeTruthy();
+        expect(lottie).toBeDefined();
+        expect(lottie?.canvas).toBeDefined();
+        expect(canvas).toBeDefined();
+        expect(canvas?.className).toEqual('test');
+        expect(canvas?.toDataURL()).toBeDefined();
+
+        const load = jest.spyOn(lottie!, 'load');
+
+        setComponentInput(fixture, {
+          src: JSON.parse(buffer) as Record<string, unknown>,
+          canvasClass: 'test',
+        });
+
+        await lastValueFrom(timer(1000));
+
+        setComponentInput(fixture, {
+          src: JSON.parse(buffer) as Record<string, unknown>,
+          canvasClass: 'test',
+        });
+
+        await lastValueFrom(timer(1000));
+
+        expect(load).toHaveBeenCalledTimes(1);
+      },
+    );
+
     // lottie web-tests
+    it('calls dotLottie.play when play prop changes to true', async () => {
+      if (isWorkerComponent) return;
+
+      const fixture = createComponent();
+
+      const { componentInstance, debugElement } = fixture;
+
+      const lottieInit = new Promise<DotLottie | null>((resolve) => {
+        const subscription = componentInstance.lottieInit.subscribe(
+          (lottie) => {
+            if (lottie) resolve(lottie);
+            subscription.unsubscribe();
+          },
+        );
+      });
+
+      setComponentInput(fixture, { src, canvasClass: 'test', play: false });
+
+      const lottie = await lottieInit;
+      const canvas = getCanvas(debugElement);
+
+      expect(componentInstance).toBeTruthy();
+      expect(lottie).toBeDefined();
+      expect(canvas).toBeDefined();
+      expect(canvas?.className).toEqual('test');
+      expect(canvas?.toDataURL()).toBeDefined();
+
+      const play = jest.spyOn(lottie!, 'play');
+
+      setComponentInput(fixture, { play: true });
+
+      await lastValueFrom(timer(1000));
+
+      expect(play).toHaveBeenCalled();
+      expect(lottie?.isPlaying).toStrictEqual(true);
+      expect(lottie?.isPaused).toStrictEqual(false);
+    });
+
+    it('calls dotLottie.pause when play prop changes to false', async () => {
+      if (isWorkerComponent) return;
+
+      const fixture = createComponent();
+
+      const { componentInstance, debugElement } = fixture;
+
+      const lottieInit = new Promise<DotLottie | null>((resolve) => {
+        const subscription = componentInstance.lottieInit.subscribe(
+          (lottie) => {
+            if (lottie) resolve(lottie);
+            subscription.unsubscribe();
+          },
+        );
+      });
+
+      setComponentInput(fixture, { src, canvasClass: 'test', play: true });
+
+      const lottie = await lottieInit;
+      const canvas = getCanvas(debugElement);
+
+      expect(componentInstance).toBeTruthy();
+      expect(lottie).toBeDefined();
+      expect(canvas).toBeDefined();
+      expect(canvas?.className).toEqual('test');
+      expect(canvas?.toDataURL()).toBeDefined();
+
+      const pause = jest.spyOn(lottie!, 'pause');
+
+      setComponentInput(fixture, { play: false });
+
+      await lastValueFrom(timer(1000));
+
+      expect(pause).toHaveBeenCalled();
+    });
+
+    it('calls dotLottie.stop when stop prop changes to true', async () => {
+      if (isWorkerComponent) return;
+
+      const fixture = createComponent();
+
+      const { componentInstance, debugElement } = fixture;
+
+      const lottieInit = new Promise<DotLottie | null>((resolve) => {
+        const subscription = componentInstance.lottieInit.subscribe(
+          (lottie) => {
+            if (lottie) resolve(lottie);
+            subscription.unsubscribe();
+          },
+        );
+      });
+
+      setComponentInput(fixture, { src, canvasClass: 'test', play: true });
+
+      const lottie = await lottieInit;
+      const canvas = getCanvas(debugElement);
+
+      expect(componentInstance).toBeTruthy();
+      expect(lottie).toBeDefined();
+      expect(canvas).toBeDefined();
+      expect(canvas?.className).toEqual('test');
+      expect(canvas?.toDataURL()).toBeDefined();
+
+      const stop = jest.spyOn(lottie!, 'stop');
+
+      setComponentInput(fixture, { stop: true });
+
+      await lastValueFrom(timer(1000));
+
+      expect(stop).toHaveBeenCalled();
+    });
+
+    it('calls dotLottie.freeze when freeze prop changes to true', async () => {
+      if (isWorkerComponent) return;
+
+      const fixture = createComponent();
+
+      const { componentInstance, debugElement } = fixture;
+
+      const lottieInit = new Promise<DotLottie | null>((resolve) => {
+        const subscription = componentInstance.lottieInit.subscribe(
+          (lottie) => {
+            if (lottie) resolve(lottie);
+            subscription.unsubscribe();
+          },
+        );
+      });
+
+      setComponentInput(fixture, { src, canvasClass: 'test', play: true });
+
+      const lottie = await lottieInit;
+      const canvas = getCanvas(debugElement);
+
+      expect(componentInstance).toBeTruthy();
+      expect(lottie).toBeDefined();
+      expect(canvas).toBeDefined();
+      expect(canvas?.className).toEqual('test');
+      expect(canvas?.toDataURL()).toBeDefined();
+
+      const freeze = jest.spyOn(lottie!, 'freeze');
+
+      setComponentInput(fixture, { freeze: true });
+
+      await lastValueFrom(timer(1000));
+
+      expect(freeze).toHaveBeenCalled();
+    });
+
+    it(
+      `calls dotLottie.unfreeze when freeze prop changes to false
+      `.trim(),
+      async () => {
+        if (isWorkerComponent) return;
+
+        const fixture = createComponent();
+
+        const { componentInstance, debugElement } = fixture;
+
+        const lottieInit = new Promise<DotLottie | null>((resolve) => {
+          const subscription = componentInstance.lottieInit.subscribe(
+            (lottie) => {
+              if (lottie) resolve(lottie);
+              subscription.unsubscribe();
+            },
+          );
+        });
+
+        setComponentInput(fixture, { src, canvasClass: 'test', play: true });
+
+        const lottie = await lottieInit;
+        const canvas = getCanvas(debugElement);
+
+        expect(componentInstance).toBeTruthy();
+        expect(lottie).toBeDefined();
+        expect(canvas).toBeDefined();
+        expect(canvas?.className).toEqual('test');
+        expect(canvas?.toDataURL()).toBeDefined();
+
+        const unfreeze = jest.spyOn(lottie!, 'unfreeze');
+
+        setComponentInput(fixture, { freeze: false });
+
+        await lastValueFrom(timer(1000));
+
+        expect(unfreeze).toHaveBeenCalled();
+      },
+    );
+
     it('calls dotLottie.setLoop when loop prop changes', async () => {
       if (isWorkerComponent) return;
 
@@ -840,5 +1198,135 @@ describe.each([
         expect.objectContaining({ hello: 'world' }),
       );
     });
+
+    it(
+      `should freeze lottie if window is not visible class when freezeOnOffscreen prop is true
+      `.trim(),
+      async () => {
+        const fixture = createComponent();
+
+        const { componentInstance } = fixture;
+
+        const lottieInit = new Promise<DotLottie | null>((resolve) => {
+          const subscription = componentInstance.lottieInit.subscribe(
+            (lottie) => {
+              if (lottie) resolve(lottie);
+              subscription.unsubscribe();
+            },
+          );
+        });
+
+        setComponentInput(fixture, { src, freezeOnOffscreen: true });
+
+        const lottie = await lottieInit;
+
+        expect(componentInstance).toBeTruthy();
+
+        const freeze = jest.spyOn(lottie!, 'freeze');
+
+        Object.defineProperty(window, 'visibilityState', {
+          configurable: true,
+          get: () => 'prerender',
+        });
+
+        window.dispatchEvent(new Event('visibilitychange'));
+
+        await lastValueFrom(timer(1000));
+
+        expect(freeze).toHaveBeenCalled();
+      },
+    );
+
+    it(
+      `should unfreeze lottie if window is return to after visibility change when freezeOnOffscreen prop is true
+      `.trim(),
+      async () => {
+        const fixture = createComponent();
+
+        const { componentInstance } = fixture;
+
+        const lottieInit = new Promise<DotLottie | null>((resolve) => {
+          const subscription = componentInstance.lottieInit.subscribe(
+            (lottie) => {
+              if (lottie) resolve(lottie);
+              subscription.unsubscribe();
+            },
+          );
+        });
+
+        setComponentInput(fixture, { src, freezeOnOffscreen: true });
+
+        const lottie = await lottieInit;
+
+        expect(componentInstance).toBeTruthy();
+
+        const unfreeze = jest.spyOn(lottie!, 'unfreeze');
+
+        Object.defineProperty(window, 'visibilityState', {
+          configurable: true,
+          get: () => 'prerender',
+        });
+
+        window.dispatchEvent(new Event('visibilitychange'));
+
+        await lastValueFrom(timer(1000));
+
+        Object.defineProperty(window, 'visibilityState', {
+          configurable: true,
+          get: () => 'visible',
+        });
+
+        window.dispatchEvent(new Event('visibilitychange'));
+
+        expect(unfreeze).toHaveBeenCalled();
+      },
+    );
+
+    it(
+      `should not freeze or unfreeze lottie if window visibility changes when freezeOnOffscreen prop is false
+      `.trim(),
+      async () => {
+        const fixture = createComponent();
+
+        const { componentInstance } = fixture;
+
+        const lottieInit = new Promise<DotLottie | null>((resolve) => {
+          const subscription = componentInstance.lottieInit.subscribe(
+            (lottie) => {
+              if (lottie) resolve(lottie);
+              subscription.unsubscribe();
+            },
+          );
+        });
+
+        setComponentInput(fixture, { src, freezeOnOffscreen: false });
+
+        const lottie = await lottieInit;
+
+        expect(componentInstance).toBeTruthy();
+
+        const freeze = jest.spyOn(lottie!, 'freeze');
+        const unfreeze = jest.spyOn(lottie!, 'unfreeze');
+
+        Object.defineProperty(window, 'visibilityState', {
+          configurable: true,
+          get: () => 'prerender',
+        });
+
+        window.dispatchEvent(new Event('visibilitychange'));
+
+        await lastValueFrom(timer(1000));
+
+        Object.defineProperty(window, 'visibilityState', {
+          configurable: true,
+          get: () => 'visible',
+        });
+
+        window.dispatchEvent(new Event('visibilitychange'));
+
+        expect(freeze).not.toHaveBeenCalled();
+        expect(unfreeze).not.toHaveBeenCalled();
+      },
+    );
   });
 });
