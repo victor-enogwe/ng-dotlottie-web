@@ -1,7 +1,7 @@
 {
   "name": "ngx-dotlottie",
   "description": "Lottie and DotLottie player for Angular",
-  "version": "0.0.0-beta12",
+  "version": "0.0.1",
   "homepage": "https://github.com/victor-enogwe/ngx-dotlottie-web#readme",
   "author": "Victor Enogwe <victor.enogwe@gmail.com>",
   "license": "MIT",
@@ -12,9 +12,7 @@
     "directory": "ngx-dotlottie-web"
   },
   "bugs": "https://github.com/victor-enogwe/ngx-dotlottie-web/issues",
-  "contributors": [
-    "Victor Enogwe <victor.enogwe@gmail.com>"
-  ],
+  "contributors": ["Victor Enogwe <victor.enogwe@gmail.com>"],
   "scripts": {
     "build": "ng build ngx-dotlottie-web",
     "build:demo": "ng build ngx-dotlottie-demo",
@@ -101,9 +99,7 @@
     "typescript-eslint": "8.23.0"
   },
   "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ],
+    "extends": ["@commitlint/config-conventional"],
     "rules": {
       "type-enum": [
         2,
@@ -142,20 +138,12 @@
       "semantic-release",
       "tslib"
     ],
-    "ignorePatterns": [
-      "dist",
-      "coverage"
-    ]
+    "ignorePatterns": ["dist", "coverage"]
   },
   "engines": {
     "node": ">=20.0.0"
   },
-  "keywords": [
-    "boilerplate",
-    "module",
-    "npm",
-    "typescript"
-  ],
+  "keywords": ["boilerplate", "module", "npm", "typescript"],
   "main": "lib/index.js",
   "packageManager": "pnpm@9.15.4",
   "pnpm": {
@@ -180,10 +168,7 @@
         "strategy": "versionsByName"
       }
     },
-    "source": [
-      "package.json",
-      "ngx-dotlottie-web/package.json"
-    ],
+    "source": ["package.json", "ngx-dotlottie-web/package.json"],
     "sortExports": [
       "types",
       "node-addons",
@@ -223,39 +208,21 @@
     ],
     "versionGroups": [
       {
-        "dependencies": [
-          "**"
-        ],
-        "dependencyTypes": [
-          "dev",
-          "peer",
-          "prod"
-        ],
-        "packages": [
-          "**"
-        ],
+        "dependencies": ["**"],
+        "dependencyTypes": ["dev", "peer", "prod"],
+        "packages": ["**"],
         "policy": "sameRange",
         "preferVersion": "highestSemver"
       },
       {
         "label": "Versions in engines field should all match",
-        "dependencyTypes": [
-          "engines"
-        ],
-        "dependencies": [
-          "**"
-        ],
-        "packages": [
-          "**"
-        ]
+        "dependencyTypes": ["engines"],
+        "dependencies": ["**"],
+        "packages": ["**"]
       },
       {
-        "dependencies": [
-          "@types/**"
-        ],
-        "dependencyTypes": [
-          "!dev"
-        ],
+        "dependencies": ["@types/**"],
+        "dependencyTypes": ["!dev"],
         "isBanned": true,
         "label": "@types packages should only be under devDependencies"
       }
