@@ -44,8 +44,8 @@ Import and use the components in your Angular application:
 
 ```typescript
 // app.component.ts
-import { DotLottieWebComponent } from 'ngx-dotlottie-web';
-import { DotLottieWebWorkerComponent } from 'ngx-dotlottie-web/webworker';
+import { DotLottieWebComponent } from 'ngx-dotlottie-web/src/web';
+import { DotLottieWebWorkerComponent } from 'ngx-dotlottie-web/src/webworker';
 
 @Component({
   // ...
