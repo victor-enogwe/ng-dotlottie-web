@@ -1,6 +1,5 @@
 import { NgClass } from '@angular/common';
 import {
-  CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
   ViewEncapsulation,
@@ -24,7 +23,6 @@ import type { DotLottieWorkerId } from '../../@types/dotlottie-webworker';
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [NgClass],
   styles: `
     .w-full {

@@ -1,7 +1,6 @@
 import { NgClass } from '@angular/common';
 import type { ElementRef } from '@angular/core';
 import {
-  CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
@@ -50,7 +49,6 @@ import { isURLOrPath } from '../../utils/is-url-or-path/is-url-or-path';
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [NgClass],
   styles: `
     .w-full {
@@ -92,7 +90,6 @@ export class DotLottieWebComponent
   private readonly viewChildReady$ = new BehaviorSubject<boolean>(false);
 
   private readonly processEvents$ = this.viewChildReady$.pipe(
-    takeUntilDestroyed(),
     switchMap((ready) =>
       iif(
         () => ready,
@@ -103,6 +100,7 @@ export class DotLottieWebComponent
         EMPTY,
       ),
     ),
+    takeUntilDestroyed(),
   );
 
   canvasClass = input<NgClass['ngClass']>({ 'w-full': true, 'h-full': true });
@@ -179,10 +177,10 @@ export class DotLottieWebComponent
   readonly lottieInit = output<DotLottie>();
 
   private src$ = toObservable(this.src).pipe(
-    takeUntilDestroyed(),
     filter((src = '') => getSrcLength(src) > 0),
     distinctUntilChanged((a, b) => this.compareSrc(a, b)),
     tap((src) => this.setSrc(src)),
+    takeUntilDestroyed(),
   );
 
   constructor() {
